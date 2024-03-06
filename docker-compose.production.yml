@@ -1,0 +1,50 @@
+version: "3.7"
+
+services:
+  nextjs-production:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.production
+    environment:
+      - NODE_ENV=production
+      - TZ=Asia/Jakarta
+    volumes:
+      - /var/log/nginx:/var/log/nginx
+    networks:
+      - traefik-network
+    deploy:
+      mode: replicated
+      replicas: 2
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.lbswarm=true"
+        - "traefik.docker.network=traefik-network"
+        
+        # http
+        - "traefik.http.routers.app-production-http.rule=Host(`app.com`,`www.app.com`)"
+        - "traefik.http.routers.app-production-http.entrypoints=web"
+
+        # https
+        - "traefik.http.routers.app-production.rule=Host(`app.com`,`www.app.com`)"
+        - "traefik.http.routers.app-production.entrypoints=websecure"
+        - "traefik.http.routers.app-production.tls=true"
+        - "traefik.http.routers.app-production.tls.options=default"
+        - "traefik.http.routers.app-production.tls.certresolver=le"
+
+        # Service
+        - "traefik.http.services.app-production.loadbalancer.server.port=3000"
+        - "traefik.http.services.app-production.loadbalancer.sticky.cookie=true"
+        - "traefik.http.services.app-production.loadbalancer.sticky.cookie.httpOnly=true"
+        - "traefik.http.services.app-production.loadbalancer.sticky.cookie.name=app"
+        - "traefik.http.services.app-production.loadbalancer.sticky.cookie.secure=true"
+
+        # Middleware for http
+        - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+        - "traefik.http.routers.app-production-http.middlewares=redirect-to-https"
+
+        # Middleware for https
+        - "traefik.http.routers.app-production.middlewares=default-middlewares@file"
+
+networks:
+  traefik-network:
+    external: true

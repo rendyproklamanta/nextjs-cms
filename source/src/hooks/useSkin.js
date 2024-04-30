@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { handleSkin } from "@/src/store/slices/layoutSlice";
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { handleSkin } from '@/src/store/slices/layoutSlice';
 
 const useSkin = () => {
    const dispatch = useDispatch();
@@ -8,10 +8,10 @@ const useSkin = () => {
 
    const setSkin = (mode) => {
       dispatch(handleSkin(mode));
-      localStorage.setItem("skin", JSON.stringify(mode));
+      localStorage.setItem('skin', JSON.stringify(mode));
    };
    useEffect(() => {
-      const storedMode = localStorage.getItem("skin");
+      const storedMode = localStorage.getItem('skin');
       if (storedMode !== null) {
          dispatch(handleSkin(JSON.parse(storedMode)));
       }

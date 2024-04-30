@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { handleDarkMode } from "@/src/store/slices/layoutSlice";
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { handleDarkMode } from '@/src/store/slices/layoutSlice';
 
 const useDarkmode = () => {
    const dispatch = useDispatch();
@@ -8,11 +8,11 @@ const useDarkmode = () => {
 
    const setDarkMode = (mode) => {
       dispatch(handleDarkMode(mode));
-      localStorage.setItem("darkMode", JSON.stringify(mode));
+      localStorage.setItem('darkMode', JSON.stringify(mode));
    };
 
    useEffect(() => {
-      const storedDarkMode = localStorage.getItem("darkMode");
+      const storedDarkMode = localStorage.getItem('darkMode');
       if (storedDarkMode !== null) {
          dispatch(handleDarkMode(JSON.parse(storedDarkMode)));
       }

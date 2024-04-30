@@ -1,32 +1,32 @@
-import React from "react";
-import Icon from "@/src/components/ui/Icon";
-import SwitchDark from "./Tools/SwitchDark";
-import useWidth from "@/src/hooks/useWidth";
-import useSidebar from "@/src/hooks/useSidebar";
-import useNavbarType from "@/src/hooks/useNavbarType";
-import useMenulayout from "@/src/hooks/useMenulayout";
-import useSkin from "@/src/hooks/useSkin";
-import Logo from "./Tools/Logo";
-import SearchModal from "./Tools/SearchModal";
-import Profile from "./Tools/Profile";
-import useMobileMenu from "@/src/hooks/useMobileMenu";
+import React from 'react';
+import Icon from '@/src/components/ui/Icon';
+import SwitchDark from './Tools/SwitchDark';
+import useWidth from '@/src/hooks/useWidth';
+import useSidebar from '@/src/hooks/useSidebar';
+import useNavbarType from '@/src/hooks/useNavbarType';
+import useMenulayout from '@/src/hooks/useMenulayout';
+import useSkin from '@/src/hooks/useSkin';
+import Logo from './Tools/Logo';
+import SearchModal from './Tools/SearchModal';
+import Profile from './Tools/Profile';
+import useMobileMenu from '@/src/hooks/useMobileMenu';
 
-const Header = ({ className = "custom-class" }) => {
+const Header = ({ className = 'custom-class' }) => {
    const [collapsed, setMenuCollapsed] = useSidebar();
    const { width, breakpoints } = useWidth();
    const [navbarType] = useNavbarType();
    const navbarTypeClass = () => {
       switch (navbarType) {
-         case "floating":
-            return "floating  has-sticky-header";
-         case "sticky":
-            return "sticky top-0 z-[999]";
-         case "static":
-            return "static";
-         case "hidden":
-            return "hidden";
+         case 'floating':
+            return 'floating  has-sticky-header';
+         case 'sticky':
+            return 'sticky top-0 z-[999]';
+         case 'static':
+            return 'static';
+         case 'hidden':
+            return 'hidden';
          default:
-            return "sticky top-0";
+            return 'sticky top-0';
       }
    };
    const [menuType] = useMenulayout();
@@ -39,42 +39,38 @@ const Header = ({ className = "custom-class" }) => {
    };
 
    const borderSwicthClass = () => {
-      if (skin === "bordered" && navbarType !== "floating") {
-         return "border-b border-slate-200 dark:border-slate-700";
-      } else if (skin === "bordered" && navbarType === "floating") {
-         return "border border-slate-200 dark:border-slate-700";
+      if (skin === 'bordered' && navbarType !== 'floating') {
+         return 'border-b border-slate-200 dark:border-slate-700';
+      } else if (skin === 'bordered' && navbarType === 'floating') {
+         return 'border border-slate-200 dark:border-slate-700';
       } else {
-         return "dark:border-b dark:border-slate-700 dark:border-opacity-60";
+         return 'dark:border-b dark:border-slate-700 dark:border-opacity-60';
       }
    };
    return (
-      <header className={className + " " + navbarTypeClass()}>
+      <header className={className + ' ' + navbarTypeClass()}>
          <div
-            className={` app-header md:px-6 px-[15px] dark:bg-slate-800 shadow-base dark:shadow-base3 bg-white
+            className={` app-header bg-white px-[15px] shadow-base dark:bg-slate-800 dark:shadow-base3 md:px-6
         ${borderSwicthClass()}
-             ${menuType === "horizontal" && width > breakpoints.xl
-                  ? "py-"
-                  : "md:py-4 py-3"
-               }
+             ${menuType === 'horizontal' && width > breakpoints.xl ? 'py-' : 'py-3 md:py-4'}
         `}
          >
-            <div className="flex justify-between items-center h-full">
+            <div className="flex h-full items-center justify-between">
                {/* For Vertical  */}
 
-               {menuType === "vertical" && (
-                  <div className="flex items-center md:space-x-4 space-x-2 rtl:space-x-reverse">
+               {menuType === 'vertical' && (
+                  <div className="flex items-center space-x-2 md:space-x-4 rtl:space-x-reverse">
                      {collapsed && width >= breakpoints.xl && (
                         <button
                            className="text-xl text-slate-900 dark:text-white"
                            onClick={() => setMenuCollapsed(!collapsed)}
-                        >
-                        </button>
+                        ></button>
                      )}
                      {width < breakpoints.xl && <Logo />}
                      {/* open mobile menu handlaer*/}
                      {width < breakpoints.xl && width >= breakpoints.md && (
                         <div
-                           className="cursor-pointer text-slate-900 dark:text-white text-2xl"
+                           className="cursor-pointer text-2xl text-slate-900 dark:text-white"
                            onClick={handleOpenMobileMenu}
                         >
                            <Icon icon="heroicons-outline:menu-alt-3" />
@@ -84,13 +80,13 @@ const Header = ({ className = "custom-class" }) => {
                   </div>
                )}
                {/* For Horizontal  */}
-               {menuType === "horizontal" && (
+               {menuType === 'horizontal' && (
                   <div className="flex items-center space-x-4 rtl:space-x-reverse">
                      <Logo />
                      {/* open mobile menu handlaer*/}
                      {width <= breakpoints.xl && (
                         <div
-                           className="cursor-pointer text-slate-900 dark:text-white text-2xl"
+                           className="cursor-pointer text-2xl text-slate-900 dark:text-white"
                            onClick={handleOpenMobileMenu}
                         >
                            <Icon icon="heroicons-outline:menu-alt-3" />
@@ -100,13 +96,13 @@ const Header = ({ className = "custom-class" }) => {
                )}
                {/*  Horizontal  Main Menu */}
                {/* Nav Tools  */}
-               <div className="nav-tools flex items-center lg:space-x-6 space-x-3 rtl:space-x-reverse">
+               <div className="nav-tools flex items-center space-x-3 lg:space-x-6 rtl:space-x-reverse">
                   <SwitchDark />
 
                   {width >= breakpoints.md && <Profile />}
                   {width <= breakpoints.md && (
                      <div
-                        className="cursor-pointer text-slate-900 dark:text-white text-2xl"
+                        className="cursor-pointer text-2xl text-slate-900 dark:text-white"
                         onClick={handleOpenMobileMenu}
                      >
                         <Icon icon="heroicons-outline:menu-alt-3" />

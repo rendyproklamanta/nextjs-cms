@@ -6,7 +6,6 @@ export const metadata = {
    description: 'Welcome to Next.js',
 };
 
-
 const page = () => {
    return (
       <>

@@ -8,57 +8,61 @@ const useOptionsAddress = () => {
 
    const getOptionsProvince = async () => {
       try {
-         const response = await fetch("https://ibnux.github.io/data-indonesia/provinsi.json");
+         const response = await fetch('https://ibnux.github.io/data-indonesia/provinsi.json');
          const options = await response.json();
          setOptionsProvince(
-            options.map(({ id, nama, }) => ({
+            options.map(({ id, nama }) => ({
                value: id,
                label: nama,
-            }))
+            })),
          );
       } catch (error) {
-         console.log("🚀 ~ file: page.jsx:61 ~ getOptions ~ error:", error);
+         console.log('🚀 ~ file: page.jsx:61 ~ getOptions ~ error:', error);
       }
       return optionsProvince;
    };
 
    const handleProvince = async (e) => {
-      setOptionsSubdistrict("");
+      setOptionsSubdistrict('');
       try {
-         const response = await fetch(`https://ibnux.github.io/data-indonesia/kabupaten/${e.target.value}.json`);
+         const response = await fetch(
+            `https://ibnux.github.io/data-indonesia/kabupaten/${e.target.value}.json`,
+         );
          const options = await response.json();
          setOptionsRegency(
-            options.map(({ id, nama, }) => ({
+            options.map(({ id, nama }) => ({
                value: id,
                label: nama,
-            }))
+            })),
          );
-         toast.success("Silahkan pilih Kabupaten", {
-            position: "top-center",
+         toast.success('Silahkan pilih Kabupaten', {
+            position: 'top-center',
             autoClose: 1000,
          });
       } catch (error) {
-         console.log("🚀 ~ file: page.jsx:83 ~ handleProvince ~ error:", error);
+         console.log('🚀 ~ file: page.jsx:83 ~ handleProvince ~ error:', error);
       }
       return optionsRegency;
    };
 
    const handleRegency = async (e) => {
       try {
-         const response = await fetch(`https://ibnux.github.io/data-indonesia/kecamatan/${e.target.value}.json`);
+         const response = await fetch(
+            `https://ibnux.github.io/data-indonesia/kecamatan/${e.target.value}.json`,
+         );
          const options = await response.json();
          setOptionsSubdistrict(
-            options.map(({ id, nama, }) => ({
+            options.map(({ id, nama }) => ({
                value: id,
                label: nama,
-            }))
+            })),
          );
-         toast.success("Silahkan pilih Kecamatan", {
-            position: "top-center",
+         toast.success('Silahkan pilih Kecamatan', {
+            position: 'top-center',
             autoClose: 1000,
          });
       } catch (error) {
-         console.log("🚀 ~ file: page.jsx:83 ~ handleRegency ~ error:", error);
+         console.log('🚀 ~ file: page.jsx:83 ~ handleRegency ~ error:', error);
       }
       return optionsSubdistrict;
    };

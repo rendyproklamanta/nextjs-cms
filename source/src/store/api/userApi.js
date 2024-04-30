@@ -1,5 +1,5 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import baseQueryMiddleware from "../baseQueryMiddleware";
+import { createApi } from '@reduxjs/toolkit/query/react';
+import baseQueryMiddleware from '../baseQueryMiddleware';
 
 export const userApi = createApi({
    reducerPath: 'userApi',
@@ -26,24 +26,18 @@ export const userApi = createApi({
             method: 'DELETE',
          }),
       }),
-      getUser: builder.query(
-         {
-            query: (id) => `/${id}`,
-            keepUnusedDataFor: 0, // set cache | in second | 0 = no-cache
-         },
-      ),
-      getUserAll: builder.query(
-         {
-            query: () => `/`,
-            keepUnusedDataFor: 0, // set cache | in second | 0 = no-cache
-         },
-      ),
-      getDummyDataTable: builder.query(
-         {
-            query: ({ page, pageSize }) => `/generate/dummy/table?page=${page}&pageSize=${pageSize}`,
-            keepUnusedDataFor: 0, // set cache | in second | 0 = no-cache
-         },
-      ),
+      getUser: builder.query({
+         query: (id) => `/${id}`,
+         keepUnusedDataFor: 0, // set cache | in second | 0 = no-cache
+      }),
+      getUserAll: builder.query({
+         query: () => `/`,
+         keepUnusedDataFor: 0, // set cache | in second | 0 = no-cache
+      }),
+      getDummyDataTable: builder.query({
+         query: ({ page, pageSize }) => `/generate/dummy/table?page=${page}&pageSize=${pageSize}`,
+         keepUnusedDataFor: 0, // set cache | in second | 0 = no-cache
+      }),
       getDummyDataFilter: builder.mutation({
          query: (payload) => ({
             url: `/generate/dummy/filter`,
@@ -56,7 +50,7 @@ export const userApi = createApi({
             url: `/generate/dummy/all`,
             method: 'POST',
          }),
-      })
+      }),
    }),
 });
 

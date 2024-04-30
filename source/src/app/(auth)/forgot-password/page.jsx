@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React from "react";
-import Link from "next/link";
-import ForgotPass from "@/src/components/auth/form/forgot";
-import useDarkMode from "@/src/hooks/useDarkMode";
-import Image from "next/image";
+import React from 'react';
+import Link from 'next/link';
+import ForgotPass from '@/src/components/auth/form/forgot';
+import useDarkMode from '@/src/hooks/useDarkMode';
+import Image from 'next/image';
 
 const ForgotPassPage = () => {
    const [isDark] = useDarkMode();
@@ -14,43 +14,60 @@ const ForgotPassPage = () => {
             <div className="left-column relative z-[1]">
                <div className="max-w-[520px] pt-20 ltr:pl-20 rtl:pr-20">
                   <Link href="/">
-                     <Image src={`/assets/images/logo/${isDark ? 'logo-white.svg' : 'logo.svg'}`} alt="" width={400} height={0} />
+                     <Image
+                        src={`/assets/images/logo/${isDark ? 'logo-white.svg' : 'logo.svg'}`}
+                        alt=""
+                        width={400}
+                        height={0}
+                     />
                   </Link>
                   <h4>
-                     Unlock your Project{" "}
-                     <span className="text-slate-800 dark:text-slate-400 font-bold">
+                     Unlock your Project{' '}
+                     <span className="font-bold text-slate-800 dark:text-slate-400">
                         performance
                      </span>
                   </h4>
                </div>
-               <div className="absolute left-0 bottom-[-130px] h-full w-full z-[-1]">
-                  <Image className="h-full w-full object-contain" src={`/assets/images/svg/img-1.svg`} alt="" width={400} height={0} />
+               <div className="absolute bottom-[-130px] left-0 z-[-1] h-full w-full">
+                  <Image
+                     className="h-full w-full object-contain"
+                     src={`/assets/images/svg/img-1.svg`}
+                     alt=""
+                     width={400}
+                     height={0}
+                  />
                </div>
             </div>
             <div className="right-column relative">
-               <div className="inner-content h-full flex flex-col bg-white dark:bg-slate-800">
-                  <div className="auth-box2 flex flex-col justify-center h-full">
-                     <div className="mobile-logo text-center mb-6 lg:hidden block">
+               <div className="inner-content flex h-full flex-col bg-white dark:bg-slate-800">
+                  <div className="auth-box2 flex h-full flex-col justify-center">
+                     <div className="mobile-logo mb-6 block text-center lg:hidden">
                         <Link href="/">
-                           <Image className="mx-auto" src={`/assets/images/svg/img-1.svg`} alt="" width={400} height={0} />
+                           <Image
+                              className="mx-auto"
+                              src={`/assets/images/svg/img-1.svg`}
+                              alt=""
+                              width={400}
+                              height={0}
+                           />
                         </Link>
                      </div>
-                     <div className="text-center 2xl:mb-10 mb-5">
-                        <h4 className="font-medium mb-4">Forgot Your Password?</h4>
-                        <div className="text-slate-500 dark:text-slate-400 text-base">
+                     <div className="mb-5 text-center 2xl:mb-10">
+                        <h4 className="mb-4 font-medium">Forgot Your Password?</h4>
+                        <div className="text-base text-slate-500 dark:text-slate-400">
                            Reset Password with Dashcode.
                         </div>
                      </div>
-                     <div className="font-normal text-base text-slate-500 dark:text-slate-400 text-center px-2 bg-slate-100 dark:bg-slate-600 rounded py-3 mb-4 mt-10">
+                     <div className="mb-4 mt-10 rounded bg-slate-100 px-2 py-3 text-center text-base font-normal text-slate-500 dark:bg-slate-600 dark:text-slate-400">
                         Enter your Email and instructions will be sent to you!
                      </div>
 
                      <ForgotPass />
-                     <div className="md:max-w-[345px] mx-auto font-normal text-slate-500 dark:text-slate-400 2xl:mt-12 mt-8 uppercase text-sm">
+                     <div className="mx-auto mt-8 text-sm font-normal uppercase text-slate-500 dark:text-slate-400 md:max-w-[345px] 2xl:mt-12">
                         Forget It,
                         <Link
                            href="/"
-                           className="text-slate-900 dark:text-white font-medium hover:underline"
+                           className="font-medium text-slate-900 hover:underline dark:text-white"
                         >
                            Send me Back
                         </Link>

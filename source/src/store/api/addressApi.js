@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const addressApi = createApi({
    reducerPath: 'addressApi',
@@ -10,29 +10,29 @@ export const addressApi = createApi({
       getProvince: builder.query({
          query: () => `/provinsi.json`,
          transformResponse: (res) => {
-            return res.map(({ id, nama, }) => ({
+            return res.map(({ id, nama }) => ({
                value: `${id + ',' + nama}`,
                label: nama,
             }));
-         }
+         },
       }),
       getRegency: builder.query({
          query: (id) => `/kabupaten/${id}.json`,
          transformResponse: (res) => {
-            return res.map(({ id, nama, }) => ({
+            return res.map(({ id, nama }) => ({
                value: `${id + ',' + nama}`,
                label: nama,
             }));
-         }
+         },
       }),
       getSubdistrict: builder.query({
          query: (id) => `/kecamatan/${id}.json`,
          transformResponse: (res) => {
-            return res.map(({ id, nama, }) => ({
+            return res.map(({ id, nama }) => ({
                value: `${id + ',' + nama}`,
                label: nama,
             }));
-         }
+         },
       }),
    }),
 });

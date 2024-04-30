@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import Icon from "@/src/components/ui/Icon";
-import Cleave from "cleave.js/react";
-import "cleave.js/dist/addons/cleave-phone.us";
+import React, { useState } from 'react';
+import Icon from '@/src/components/ui/Icon';
+import Cleave from 'cleave.js/react';
+import 'cleave.js/dist/addons/cleave-phone.us';
 
 const InputGroup = ({
    type,
    label,
    placeholder,
-   classLabel = "form-label",
-   className = "",
+   classLabel = 'form-label',
+   className = '',
    // eslint-disable-next-line no-unused-vars
-   classGroup = "",
+   classGroup = '',
    register,
    name,
    readonly,
@@ -42,32 +42,34 @@ const InputGroup = ({
    };
 
    return (
-      <div className={`  ${horizontal && "flex"} ${merged ? "merged" : ""}  `}>
+      <div className={`  ${horizontal && 'flex'} ${merged ? 'merged' : ''}  `}>
          {label && (
             <label
                htmlFor={id}
-               className={`block capitalize ${classLabel} ${error ? "text-danger-500" : ""}  ${horizontal ? "flex-0 mr-6 md:w-[100px] w-[60px] break-words" : ""}`}
+               className={`block capitalize ${classLabel} ${error ? 'text-danger-500' : ''}  ${horizontal ? 'flex-0 mr-6 w-[60px] break-words md:w-[100px]' : ''}`}
             >
                {label}
             </label>
          )}
-         <div className={`flex items-stretch inputGroup ${append ? "has-append" : ""} ${prepend ? "has-prepend" : ""} ${error ? "is-invalid" : ""}  ${validate && "is-valid"} ${horizontal ? "flex-1" : ""}`}>
+         <div
+            className={`inputGroup flex items-stretch ${append ? 'has-append' : ''} ${prepend ? 'has-prepend' : ''} ${error ? 'is-invalid' : ''}  ${validate && 'is-valid'} ${horizontal ? 'flex-1' : ''}`}
+         >
             {/* prepend*/}
             {prepend && (
-               <span className="flex-none input-group-addon">
-                  <div className="input-group-text  h-full prepend-slot">
-                     {prepend}
-                  </div>
+               <span className="input-group-addon flex-none">
+                  <div className="input-group-text  prepend-slot h-full">{prepend}</div>
                </span>
             )}
             <div className="flex-1">
-               <div className={`relative formGroup2 ${error && "has-error"} ${validate && "is-valid"}`}>
+               <div
+                  className={`formGroup2 relative ${error && 'has-error'} ${validate && 'is-valid'}`}
+               >
                   {name && !isMask && (
                      <input
-                        type={type === "password" && open === true ? "text" : type}
+                        type={type === 'password' && open === true ? 'text' : type}
                         {...register(name)}
                         {...rest}
-                        className={`${error ? " has-error" : " "} input-group-control block w-full focus:outline-none py-2 ${className}  `}
+                        className={`${error ? ' has-error' : ' '} input-group-control block w-full py-2 focus:outline-none ${className}  `}
                         placeholder={placeholder}
                         readOnly={readonly}
                         disabled={disabled}
@@ -77,8 +79,8 @@ const InputGroup = ({
                   )}
                   {!name && !isMask && (
                      <input
-                        type={type === "password" && open === true ? "text" : type}
-                        className={`input-group-control block w-full focus:outline-none py-2 ${className}`}
+                        type={type === 'password' && open === true ? 'text' : type}
+                        className={`input-group-control block w-full py-2 focus:outline-none ${className}`}
                         placeholder={placeholder}
                         readOnly={readonly}
                         disabled={disabled}
@@ -92,7 +94,7 @@ const InputGroup = ({
                         {...rest}
                         placeholder={placeholder}
                         options={options}
-                        className={`${error ? " has-error" : " "} input-group-control w-full py-2 ${className}  `}
+                        className={`${error ? ' has-error' : ' '} input-group-control w-full py-2 ${className}  `}
                         onFocus={onFocus}
                         id={id}
                         readOnly={readonly}
@@ -104,7 +106,7 @@ const InputGroup = ({
                      <Cleave
                         placeholder={placeholder}
                         options={options}
-                        className={`${error ? " has-error" : " "} input-group-control w-full py-2 ${className}  `}
+                        className={`${error ? ' has-error' : ' '} input-group-control w-full py-2 ${className}  `}
                         onFocus={onFocus}
                         id={id}
                         readOnly={readonly}
@@ -113,16 +115,11 @@ const InputGroup = ({
                      />
                   )}
                   {/* icon */}
-                  <div className="flex text-xl absolute ltr:right-[14px] rtl:left-[14px] top-1/2 -translate-y-1/2  space-x-1 rtl:space-x-reverse">
+                  <div className="absolute top-1/2 flex -translate-y-1/2 space-x-1 text-xl ltr:right-[14px]  rtl:left-[14px] rtl:space-x-reverse">
                      {hasicon && (
-                        <span
-                           className="cursor-pointer text-secondary-500"
-                           onClick={handleOpen}
-                        >
-                           {open && type === "password" && (
-                              <Icon icon="heroicons-outline:eye" />
-                           )}
-                           {!open && type === "password" && (
+                        <span className="cursor-pointer text-secondary-500" onClick={handleOpen}>
+                           {open && type === 'password' && <Icon icon="heroicons-outline:eye" />}
+                           {!open && type === 'password' && (
                               <Icon icon="heroicons-outline:eye-off" />
                            )}
                         </span>
@@ -143,18 +140,19 @@ const InputGroup = ({
             </div>
             {/* append*/}
             {append && (
-               <span className="flex-none input-group-addon right">
-                  <div className="input-group-text  h-full append-slot">{append}</div>
+               <span className="input-group-addon right flex-none">
+                  <div className="input-group-text  append-slot h-full">{append}</div>
                </span>
             )}
          </div>
          {/* error and success message*/}
          {error && (
             <div
-               className={` mt-2 ${msgTooltip
-                  ? " inline-block bg-danger-500 text-white text-[10px] px-2 py-1 rounded"
-                  : " text-danger-500 block text-sm"
-                  }`}
+               className={` mt-2 ${
+                  msgTooltip
+                     ? ' inline-block rounded bg-danger-500 px-2 py-1 text-[10px] text-white'
+                     : ' block text-sm text-danger-500'
+               }`}
             >
                {error.message}
             </div>
@@ -162,10 +160,11 @@ const InputGroup = ({
          {/* validated and success message*/}
          {validate && (
             <div
-               className={` mt-2 ${msgTooltip
-                  ? " inline-block bg-success-500 text-white text-[10px] px-2 py-1 rounded"
-                  : " text-success-500 block text-sm"
-                  }`}
+               className={` mt-2 ${
+                  msgTooltip
+                     ? ' inline-block rounded bg-success-500 px-2 py-1 text-[10px] text-white'
+                     : ' block text-sm text-success-500'
+               }`}
             >
                {validate}
             </div>

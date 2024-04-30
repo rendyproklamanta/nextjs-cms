@@ -6,11 +6,8 @@ export const metadata = {
    description: 'Welcome to Next.js',
 };
 
-
 const ManageUserPage = ({ params }) => {
-   return (
-      <UserForm params={params} />
-   );
+   return <UserForm params={params} />;
 };
 
 export default ManageUserPage;

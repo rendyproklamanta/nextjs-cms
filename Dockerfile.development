@@ -16,7 +16,7 @@ WORKDIR /app
 RUN npm install -g yarn --force
 
 # Copy your files to container
-COPY ./source/package.json .
+COPY ./source .
 RUN yarn
 
 EXPOSE 3000

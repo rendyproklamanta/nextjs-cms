@@ -1,12 +1,7 @@
-import React from "react";
-import { Image as NextImage } from "next/image";
+import React from 'react';
+import { Image as NextImage } from 'next/image';
 
-const Image = ({
-   wrapperClass = "custom-class",
-   src,
-   className,
-   alt = "image-title",
-}) => {
+const Image = ({ wrapperClass = 'custom-class', src, className, alt = 'image-title' }) => {
    return (
       <div className={`relative ${wrapperClass}`}>
          {src ? (
@@ -15,12 +10,12 @@ const Image = ({
                height={0}
                src={src}
                alt={alt}
-               className={`max-w-full block ${className}`}
+               className={`block max-w-full ${className}`}
             />
          ) : (
-            <div className="bg-neutral-300 w-full h-[200px] flex flex-col items-center justify-center font-medium rounded-md text-xl text-slate-900 capitalize">
+            <div className="flex h-[200px] w-full flex-col items-center justify-center rounded-md bg-neutral-300 text-xl font-medium capitalize text-slate-900">
                Please Set Image
-               <code className="text-sm text-primary-500 lowercase mt-3">
+               <code className="mt-3 text-sm lowercase text-primary-500">
                   [src={`"images/all-img/image-1.png"`}]
                </code>
             </div>

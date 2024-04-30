@@ -1,11 +1,9 @@
-import React from "react";
+import React from 'react';
 import { Box, Button, MenuItem } from '@mui/material';
+
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import {
-   MaterialReactTable,
-   useMaterialReactTable,
-} from 'material-react-table';
-import { generateCsv, download } from 'export-to-csv';
+import { MaterialReactTable, useMaterialReactTable } from 'material-react-table';
+import { download, generateCsv } from 'export-to-csv';
 
 const MuiTable = ({
    columns,
@@ -17,9 +15,8 @@ const MuiTable = ({
    handleExportData,
    csvConfig,
    columnFilters,
-   setColumnFilters
+   setColumnFilters,
 }) => {
-
    const handleExportRows = (rows) => {
       const rowData = rows.map((row) => row.original);
       const csv = generateCsv(csvConfig)(rowData);
@@ -40,7 +37,7 @@ const MuiTable = ({
       state: {
          isLoading: isFetching, //cell skeletons and loading overlay
          pagination,
-         columnFilters
+         columnFilters,
       },
       renderRowActionMenuItems: ({ row }) => [
          <MenuItem key="edit" onClick={() => console.info(row.original.id)}>
@@ -52,7 +49,7 @@ const MuiTable = ({
       ],
       initialState: {
          density: 'compact',
-         showColumnFilters: true
+         showColumnFilters: true,
       },
       rowCount: totalRow,
       onPaginationChange: setPagination,
@@ -86,9 +83,7 @@ const MuiTable = ({
             </Button>
             <Button
                style={{ textTransform: 'none' }}
-               disabled={
-                  !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
-               }
+               disabled={!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()}
                onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
                startIcon={<FileDownloadIcon />}
             >
@@ -98,9 +93,7 @@ const MuiTable = ({
       ),
    });
 
-   return (
-      <MaterialReactTable table={table} />
-   );
+   return <MaterialReactTable table={table} />;
 };
 
 export default MuiTable;

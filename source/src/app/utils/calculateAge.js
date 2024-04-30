@@ -5,9 +5,11 @@ export const calculateAge = (dob) => {
    let age = today.getFullYear() - dob.getFullYear();
 
    // Check if the birthday has already occurred this year
-   if (today.getMonth() < dob.getMonth() || (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())) {
+   if (
+      today.getMonth() < dob.getMonth() ||
+      (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())
+   ) {
       age--;
       return age;
    }
-
 };

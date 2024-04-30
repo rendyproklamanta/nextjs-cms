@@ -1,12 +1,12 @@
-import React, { Fragment } from "react";
-import Icon from "@/src/components/ui/Icon";
+import React, { Fragment } from 'react';
+import Icon from '@/src/components/ui/Icon';
 const Select = ({
    label,
    placeholder,
-   classLabel = "form-label",
-   className = "",
+   classLabel = 'form-label',
+   className = '',
    // eslint-disable-next-line no-unused-vars
-   classGroup = "",
+   classGroup = '',
    register,
    name,
    readonly,
@@ -26,24 +26,25 @@ const Select = ({
    size,
    ...rest
 }) => {
-   options = options || Array(3).fill("option");
+   options = options || Array(3).fill('option');
    return (
       <div
-         className={`formGroup  ${error && "has-error"}  ${horizontal && "flex"}  ${validate && "is-valid"} `}
+         className={`formGroup  ${error && 'has-error'}  ${horizontal && 'flex'}  ${validate && 'is-valid'} `}
       >
          {label && (
             <label
                htmlFor={id}
-               className={`block capitalize ${classLabel} ${error ? "text-danger-500" : ""} ${horizontal ? "flex-0 mr-6 md:w-[100px] w-[60px] break-words" : ""}`}>
+               className={`block capitalize ${classLabel} ${error ? 'text-danger-500' : ''} ${horizontal ? 'flex-0 mr-6 w-[60px] break-words md:w-[100px]' : ''}`}
+            >
                {label}
             </label>
          )}
-         <div className={`relative ${horizontal ? "flex-1" : ""}`}>
+         <div className={`relative ${horizontal ? 'flex-1' : ''}`}>
             {name && (
                <select
                   {...register(name)}
                   {...rest}
-                  className={`${error ? " has-error" : " "} form-control py-2  appearance-none ${className}  `}
+                  className={`${error ? ' has-error' : ' '} form-control appearance-none  py-2 ${className}  `}
                   placeholder={placeholder}
                   readOnly={readonly}
                   disabled={disabled}
@@ -52,8 +53,8 @@ const Select = ({
                   size={size}
                   defaultValue={defaultValue}
                >
-                  <option value="" disabled >
-                     {placeholder ?? "-- Select Options --"}
+                  <option value="" disabled>
+                     {placeholder ?? '-- Select Options --'}
                   </option>
 
                   {options.map((option, i) => (
@@ -69,8 +70,9 @@ const Select = ({
             )}
             {!name && (
                <select
-                  className={`${error ? " has-error" : " "
-                     } form-control py-2 appearance-none ${className}  `}
+                  className={`${
+                     error ? ' has-error' : ' '
+                  } form-control appearance-none py-2 ${className}  `}
                   placeholder={placeholder}
                   readOnly={readonly}
                   disabled={disabled}
@@ -99,10 +101,7 @@ const Select = ({
             )}
 
             {/* icon */}
-            <div className="flex text-xl absolute ltr:right-[14px] rtl:left-[14px] top-1/2 -translate-y-1/2  space-x-1 rtl:space-x-reverse">
-               <span className=" relative -right-2 inline-block text-slate-900 dark:text-slate-300 pointer-events-none">
-                  <Icon icon="heroicons:chevron-down" />
-               </span>
+            <div className="absolute top-1/2 flex -translate-y-1/2 space-x-1 text-xl ltr:right-[14px]  rtl:left-[14px] rtl:space-x-reverse">
                {error && (
                   <span className="text-danger-500">
                      <Icon icon="heroicons-outline:information-circle" />
@@ -118,10 +117,11 @@ const Select = ({
          {/* error and success message*/}
          {error && (
             <div
-               className={` mt-2 ${msgTooltip
-                  ? " inline-block bg-danger-500 text-white text-[10px] px-2 py-1 rounded"
-                  : " text-danger-500 block text-sm"
-                  }`}
+               className={` mt-2 ${
+                  msgTooltip
+                     ? ' inline-block rounded bg-danger-500 px-2 py-1 text-[10px] text-white'
+                     : ' block text-sm text-danger-500'
+               }`}
             >
                {error.message}
             </div>
@@ -129,10 +129,11 @@ const Select = ({
          {/* validated and success message*/}
          {validate && (
             <div
-               className={` mt-2 ${msgTooltip
-                  ? " inline-block bg-success-500 text-white text-[10px] px-2 py-1 rounded"
-                  : " text-success-500 block text-sm"
-                  }`}
+               className={` mt-2 ${
+                  msgTooltip
+                     ? ' inline-block rounded bg-success-500 px-2 py-1 text-[10px] text-white'
+                     : ' block text-sm text-success-500'
+               }`}
             >
                {validate}
             </div>

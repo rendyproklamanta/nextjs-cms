@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { handleMonoChrome } from "@/src/store/slices/layoutSlice";
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { handleMonoChrome } from '@/src/store/slices/layoutSlice';
 
 const useMonoChrome = () => {
    const dispatch = useDispatch();
@@ -8,11 +8,11 @@ const useMonoChrome = () => {
 
    const setMonoChrome = (val) => {
       dispatch(handleMonoChrome(val));
-      localStorage.setItem("monochrome", JSON.stringify(val));
+      localStorage.setItem('monochrome', JSON.stringify(val));
    };
 
    useEffect(() => {
-      const storedMode = localStorage.getItem("monochrome");
+      const storedMode = localStorage.getItem('monochrome');
       if (storedMode !== null) {
          dispatch(handleMonoChrome(JSON.parse(storedMode)));
       }

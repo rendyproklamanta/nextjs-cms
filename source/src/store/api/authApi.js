@@ -1,8 +1,8 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 // import Swal from "sweetalert2";
 
 const baseQuery = fetchBaseQuery({
-   credentials: "include",
+   credentials: 'include',
    baseUrl: process.env.NEXT_PUBLIC_API_URL + 'auths',
 });
 
@@ -31,11 +31,9 @@ export const authApi = createApi({
             body: payload,
          }),
       }),
-      getUserInfo: builder.query(
-         {
-            query: ({ token }) => `/tokendata?token=${token}`,
-         },
-      ),
+      getUserInfo: builder.query({
+         query: ({ token }) => `/tokendata?token=${token}`,
+      }),
    }),
 });
 

@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 export default function useWidth() {
    const [width, setWidth] = useState(1920);
    // eslint-disable-next-line no-unused-vars
    const [breakpoints, setBreakpoints] = useState({
-      sm: "640",
-      md: "768",
-      lg: "1024",
-      xl: "1280",
+      sm: '640',
+      md: '768',
+      lg: '1024',
+      xl: '1280',
    });
 
    useEffect(() => {
@@ -16,11 +16,11 @@ export default function useWidth() {
       };
 
       // Check if window is available (SSR)
-      if (typeof window !== "undefined") {
+      if (typeof window !== 'undefined') {
          setWidth(window.innerWidth);
-         window.addEventListener("resize", handleResize);
+         window.addEventListener('resize', handleResize);
          return () => {
-            window.removeEventListener("resize", handleResize);
+            window.removeEventListener('resize', handleResize);
          };
       }
    }, []);

@@ -1,9 +1,9 @@
-import { useRouter, usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import Icon from "@/src/components/ui/Icon";
-import useMobileMenu from "@/src/hooks/useMobileMenu";
-import Submenu from "./Submenu";
+import { useRouter, usePathname } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import Icon from '@/src/components/ui/Icon';
+import useMobileMenu from '@/src/hooks/useMobileMenu';
+import Submenu from './Submenu';
 
 const Navmenu = ({ menus }) => {
    const router = useRouter();
@@ -18,7 +18,7 @@ const Navmenu = ({ menus }) => {
    };
 
    const location = usePathname();
-   const locationName = location.replace("/", "");
+   const locationName = location.replace('/', '');
 
    const [mobileMenu, setMobileMenu] = useMobileMenu();
 
@@ -29,9 +29,7 @@ const Navmenu = ({ menus }) => {
          if (item.link === locationName) {
             submenuIndex = null;
          } else {
-            const ciIndex = item.child.findIndex(
-               (ci) => ci.childlink === locationName
-            );
+            const ciIndex = item.child.findIndex((ci) => ci.childlink === locationName);
             if (ciIndex !== -1) {
                submenuIndex = i;
             }
@@ -52,9 +50,9 @@ const Navmenu = ({ menus }) => {
                <li
                   key={i}
                   className={` single-sidebar-menu 
-              ${item.child ? "item-has-children" : ""}
-              ${activeSubmenu === i ? "open" : ""}
-              ${locationName === item.link ? "menu-item-active" : ""}`}
+              ${item.child ? 'item-has-children' : ''}
+              ${activeSubmenu === i ? 'open' : ''}
+              ${locationName === item.link ? 'menu-item-active' : ''}`}
                >
                   {/* single menu with no childred*/}
                   {!item.child && !item.isHeadr && (
@@ -67,19 +65,16 @@ const Navmenu = ({ menus }) => {
                      </Link>
                   )}
                   {/* only for menulabel */}
-                  {item.isHeadr && !item.child && (
-                     <div className="menulabel">{item.title}</div>
-                  )}
+                  {item.isHeadr && !item.child && <div className="menulabel">{item.title}</div>}
                   {/*    !!sub menu parent   */}
                   {item.child && (
                      <div
-                        className={`menu-link ${activeSubmenu === i
-                           ? "parent_active not-collapsed"
-                           : "collapsed"
-                           }`}
+                        className={`menu-link ${
+                           activeSubmenu === i ? 'parent_active not-collapsed' : 'collapsed'
+                        }`}
                         onClick={() => toggleSubmenu(i)}
                      >
-                        <div className="flex-1 flex items-start">
+                        <div className="flex flex-1 items-start">
                            <span className="menu-icon">
                               <Icon icon={item.icon} />
                            </span>
@@ -87,8 +82,9 @@ const Navmenu = ({ menus }) => {
                         </div>
                         <div className="flex-0">
                            <div
-                              className={`menu-arrow transform transition-all duration-300 ${activeSubmenu === i ? " rotate-90" : ""
-                                 }`}
+                              className={`menu-arrow transform transition-all duration-300 ${
+                                 activeSubmenu === i ? ' rotate-90' : ''
+                              }`}
                            >
                               <Icon icon="heroicons-outline:chevron-right" />
                            </div>

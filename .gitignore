@@ -1,11 +1,12 @@
 node_modules
 /data
+MASTER
 
 # next.js
 .next
-/Frontend/out
-/Frontend/build
-/Frontend/.contentlayer
+/source/out
+/source/build
+/source/.contentlayer
 
 .vercel
 

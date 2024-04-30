@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import menuItems from "@/src/constant/menuItems";
-import Icon from "@/src/components/ui/Icon";
+import React, { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import menuItems from '@/src/constant/menuItems';
+import Icon from '@/src/components/ui/Icon';
 
 const Breadcrumbs = () => {
    const location = usePathname();
-   const locationName = location.replace("/", "");
+   const locationName = location.replace('/', '');
 
    const [isHide, setIsHide] = useState(null);
-   const [groupTitle, setGroupTitle] = useState("");
+   const [groupTitle, setGroupTitle] = useState('');
 
    useEffect(() => {
-      const currentMenuItem = menuItems.find(
-         (item) => item.link === locationName
-      );
+      const currentMenuItem = menuItems.find((item) => item.link === locationName);
 
       const currentChild = menuItems.find((item) =>
-         item.child?.find((child) => child.childlink === locationName)
+         item.child?.find((child) => child.childlink === locationName),
       );
 
       if (currentMenuItem) {
@@ -31,13 +29,13 @@ const Breadcrumbs = () => {
    return (
       <>
          {!isHide ? (
-            <div className="md:mb-6 mb-4 flex space-x-3 rtl:space-x-reverse">
+            <div className="mb-4 flex space-x-3 md:mb-6 rtl:space-x-reverse">
                <ul className="breadcrumbs">
                   <li className="text-primary-500">
                      <Link href="/" className="text-lg">
                         <Icon icon="heroicons-outline:home" />
                      </Link>
-                     <span className="breadcrumbs-icon rtl:transform rtl:rotate-180">
+                     <span className="breadcrumbs-icon rtl:rotate-180 rtl:transform">
                         <Icon icon="heroicons:chevron-right" />
                      </span>
                   </li>
@@ -46,14 +44,12 @@ const Breadcrumbs = () => {
                         <button type="button" className="capitalize">
                            {groupTitle}
                         </button>
-                        <span className="breadcrumbs-icon rtl:transform rtl:rotate-180">
+                        <span className="breadcrumbs-icon rtl:rotate-180 rtl:transform">
                            <Icon icon="heroicons:chevron-right" />
                         </span>
                      </li>
                   )}
-                  <li className="capitalize text-slate-500 dark:text-slate-400">
-                     {locationName}
-                  </li>
+                  <li className="capitalize text-slate-500 dark:text-slate-400">{locationName}</li>
                </ul>
             </div>
          ) : null}

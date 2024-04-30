@@ -6,11 +6,8 @@ export const metadata = {
    description: 'Welcome to Next.js',
 };
 
-
 const page = () => {
-   return (
-      <ManageUserPage />
-   );
+   return <ManageUserPage />;
 };
 
 export default page;

@@ -3,7 +3,11 @@
 import { createMRTColumnHelper } from 'material-react-table';
 
 import { mkConfig, generateCsv, download } from 'export-to-csv';
-import { useGetDummyDataAllMutation, useGetDummyDataFilterMutation, useGetDummyDataTableQuery } from "@/src/store/api/userApi";
+import {
+   useGetDummyDataAllMutation,
+   useGetDummyDataFilterMutation,
+   useGetDummyDataTableQuery,
+} from '@/src/store/api/userApi';
 import { useEffect, useState } from 'react';
 import MuiTable from '../../ui/MuiTable';
 
@@ -28,19 +32,20 @@ const Example = () => {
 
    // Handling API
    const { isFetching, data: dataDummy } = useGetDummyDataTableQuery({ page, pageSize });
-   const [handleExportData, { isLoading: isLoadingExport, data: dataExport }] = useGetDummyDataAllMutation();
+   const [handleExportData, { isLoading: isLoadingExport, data: dataExport }] =
+      useGetDummyDataAllMutation();
    const [handleFilterData] = useGetDummyDataFilterMutation();
 
    // Format the Data as we like to show in table
    const dataFormat = (item) => {
-      return ({
+      return {
          id: item.id,
          firstName: item.firstName,
          lastName: item.lastName,
          company: item.company,
          city: item.city,
-         country: item.country
-      });
+         country: item.country,
+      };
    };
 
    const filter = [...columnFilters];
@@ -48,12 +53,14 @@ const Example = () => {
 
    useEffect(() => {
       if (columnFilters.length) {
-         handleFilterData(payload).unwrap()
+         handleFilterData(payload)
+            .unwrap()
             .then((res) => {
                setData(res?.data);
                setTotalRow(res?.totalRow);
-            }).catch((error) => {
-               console.log("🚀 ~ file: ReportDailyTable.jsx:37 ~ .then ~ error:", error);
+            })
+            .catch((error) => {
+               console.log('🚀 ~ file: ReportDailyTable.jsx:37 ~ .then ~ error:', error);
             });
       } else {
          // Set Data
@@ -68,7 +75,7 @@ const Example = () => {
    // Handle export all data
    useEffect(() => {
       if (!isLoadingExport && dataExport?.data) {
-         const data = dataExport?.data?.map(item => (dataFormat(item)));
+         const data = dataExport?.data?.map((item) => dataFormat(item));
 
          const csv = generateCsv(csvConfig)(data);
          download(csvConfig)(csv);
@@ -79,7 +86,7 @@ const Example = () => {
    let dataTable = [];
    let formattedNumber = 0;
    if (data) {
-      dataTable = data?.map(item => (dataFormat(item)));
+      dataTable = data?.map((item) => dataFormat(item));
       formattedNumber = totalRow ? totalRow.toLocaleString('id-ID').replace(/,/g, '.') : 0;
    }
 
@@ -90,15 +97,12 @@ const Example = () => {
          header: 'ID',
          size: 100,
          footer: 'Total Data', //simple string header
-
       }),
       columnHelper.accessor('firstName', {
          header: 'First Name',
          size: 100,
          Cell: ({ renderedCellValue }) => <span style={{ color: 'red' }}>{renderedCellValue}</span>,
-         Footer: () => (
-            <span color="warning.main">{formattedNumber}</span>
-         ),
+         Footer: () => <span color="warning.main">{formattedNumber}</span>,
       }),
       columnHelper.accessor('lastName', {
          header: 'Last Name',
@@ -118,18 +122,20 @@ const Example = () => {
       }),
    ];
 
-   return <MuiTable
-      columns={columns}
-      data={dataTable}
-      isFetching={isFetching}
-      pagination={pagination}
-      setPagination={setPagination}
-      totalRow={totalRow}
-      handleExportData={handleExportData}
-      csvConfig={csvConfig}
-      columnFilters={columnFilters}
-      setColumnFilters={setColumnFilters}
-   />;
+   return (
+      <MuiTable
+         columns={columns}
+         data={dataTable}
+         isFetching={isFetching}
+         pagination={pagination}
+         setPagination={setPagination}
+         totalRow={totalRow}
+         handleExportData={handleExportData}
+         csvConfig={csvConfig}
+         columnFilters={columnFilters}
+         setColumnFilters={setColumnFilters}
+      />
+   );
 };
 
 export default Example;

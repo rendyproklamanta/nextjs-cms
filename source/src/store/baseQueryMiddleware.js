@@ -1,11 +1,11 @@
-import { fetchBaseQuery } from "@reduxjs/toolkit/query";
-import { handleLogout, refreshAccessTokenSlice } from "./slices/authSlice";
-import { toast } from "react-toastify";
+import { fetchBaseQuery } from '@reduxjs/toolkit/query';
+import { handleLogout, refreshAccessTokenSlice } from './slices/authSlice';
+import { toast } from 'react-toastify';
 
-const baseQuery = (baseUrl) => fetchBaseQuery(
-   {
+const baseQuery = (baseUrl) =>
+   fetchBaseQuery({
       baseUrl: baseUrl,
-      credentials: "include",
+      credentials: 'include',
       prepareHeaders: (headers, { getState }) => {
          const { accessToken } = getState().auth;
          headers.set('Authorization', `Bearer ${accessToken}`);
@@ -46,7 +46,7 @@ const baseQueryMiddleware = (baseUrl) => async (args, api, extraOptions) => {
 
       if (refreshResult?.data?.success) {
          api.dispatch(refreshAccessTokenSlice(refreshResult.data.data.accessToken));
-         result = await baseQuery(baseUrl)(args, api, extraOptions);  // retry the original query with new access token
+         result = await baseQuery(baseUrl)(args, api, extraOptions); // retry the original query with new access token
       } else {
          error = refreshResult.error.data.message.code ?? refreshResult.error.data.message;
          errorAuth = true;
@@ -56,7 +56,7 @@ const baseQueryMiddleware = (baseUrl) => async (args, api, extraOptions) => {
    if (error) {
       toast.error(error, {
          //toastId: error,
-         position: "top-center",
+         position: 'top-center',
          autoClose: 2000,
       });
 

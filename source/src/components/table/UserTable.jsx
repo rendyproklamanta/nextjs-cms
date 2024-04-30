@@ -1,16 +1,16 @@
 'use client';
 
 /* eslint-disable react/display-name */
-import React from "react";
-import { useDeleteUserMutation, useGetUserAllQuery } from "@/src/store/api/userApi";
-import TableData from "@/src/components/TableData";
-import Tooltip from "@/src/components/ui/Tooltip";
-import Link from "next/link";
-import { Icon } from "@iconify/react";
-import { useEffect } from "react";
-import moment from "moment/moment";
-import Swal from "sweetalert2";
-import Loading from "@/src/app/loading";
+import React from 'react';
+import { useDeleteUserMutation, useGetUserAllQuery } from '@/src/store/api/userApi';
+import TableData from '@/src/components/TableData';
+import Tooltip from '@/src/components/ui/Tooltip';
+import Link from 'next/link';
+import { Icon } from '@iconify/react';
+import { useEffect } from 'react';
+import moment from 'moment/moment';
+import Swal from 'sweetalert2';
+import Loading from '@/src/app/loading';
 
 const UserTable = () => {
    const { isLoading, data: res, refetch } = useGetUserAllQuery();
@@ -29,22 +29,16 @@ const UserTable = () => {
          showCancelButton: true,
       }).then((result) => {
          if (result['isConfirmed']) {
-            deleteUser(id).unwrap()
+            deleteUser(id)
+               .unwrap()
                .then((res) => {
                   if (res.success) {
-                     Swal.fire(
-                        'Success',
-                        'User Berhasil Dihapus',
-                        'success'
-                     );
+                     Swal.fire('Success', 'User Berhasil Dihapus', 'success');
                      refetch();
                   }
-               }).catch((error) => {
-                  Swal.fire(
-                     'Failed!',
-                     error.data.message,
-                     'error'
-                  );
+               })
+               .catch((error) => {
+                  Swal.fire('Failed!', error.data.message, 'error');
                });
          }
       });
@@ -52,36 +46,36 @@ const UserTable = () => {
 
    const COLUMNS = [
       {
-         header: "username",
-         accessor: "username",
+         header: 'username',
+         accessor: 'username',
          Cell: (row) => {
             return <span>{row?.cell?.value}</span>;
          },
       },
       {
-         header: "nama",
-         accessor: "name",
+         header: 'nama',
+         accessor: 'name',
          Cell: (row) => {
             return <span>{row?.cell?.value}</span>;
          },
       },
       {
-         header: "NAMA PRAKTEK MANDIRI BIDAN (PMB)",
-         accessor: "pmb",
+         header: 'NAMA PRAKTEK MANDIRI BIDAN (PMB)',
+         accessor: 'pmb',
          Cell: (row) => {
             return <span>{row?.cell?.value}</span>;
          },
       },
       {
-         header: "tanggal dibuat",
-         accessor: "createdAt",
+         header: 'tanggal dibuat',
+         accessor: 'createdAt',
          Cell: (row) => {
             return <span>{moment(row?.cell?.value).format('DD-MM-YYYY')}</span>;
          },
       },
       {
-         header: "action",
-         accessor: "_id",
+         header: 'action',
+         accessor: '_id',
          // eslint-disable-next-line no-unused-vars
          Cell: (row) => {
             return (
@@ -100,7 +94,11 @@ const UserTable = () => {
                      animation="shift-away"
                      theme="danger"
                   >
-                     <button className="action-btn" type="button" onClick={() => handleDelete(row?.cell?.value)}>
+                     <button
+                        className="action-btn"
+                        type="button"
+                        onClick={() => handleDelete(row?.cell?.value)}
+                     >
                         <Icon icon="heroicons:trash" />
                      </button>
                   </Tooltip>
@@ -115,7 +113,7 @@ const UserTable = () => {
    }
 
    if (!isLoading && res?.data) {
-      return <TableData title={"List User"} columns={COLUMNS} data={res?.data} />;
+      return <TableData title={'List User'} columns={COLUMNS} data={res?.data} />;
    }
 };
 

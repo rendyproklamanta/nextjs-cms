@@ -1,26 +1,24 @@
-import React, { useState } from "react";
-import Textinput from "@/src/components/ui/Textinput";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { useRouter } from "next/navigation";
-import Checkbox from "@/src/components/ui/Checkbox";
-import { useDispatch } from "react-redux";
-import { handleRegister } from "../../../store/slices/authSlice";
+import React, { useState } from 'react';
+import Textinput from '@/src/components/ui/Textinput';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { useRouter } from 'next/navigation';
+import Checkbox from '@/src/components/ui/Checkbox';
+import { useDispatch } from 'react-redux';
+import { handleRegister } from '../../../store/slices/authSlice';
 
 const schema = yup
    .object({
-      name: yup.string().required("Name is Required"),
-      email: yup.string().email("Invalid email").required("Email is Required"),
+      name: yup.string().required('Name is Required'),
+      email: yup.string().email('Invalid email').required('Email is Required'),
       password: yup
          .string()
-         .min(6, "Password must be at least 8 characters")
+         .min(6, 'Password must be at least 8 characters')
          .max(20, "Password shouldn't be more than 20 characters")
-         .required("Please enter password"),
+         .required('Please enter password'),
       // confirm password
-      confirmpassword: yup
-         .string()
-         .oneOf([yup.ref("password"), null], "Passwords must match"),
+      confirmpassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
    })
    .required();
 
@@ -34,7 +32,7 @@ const RegForm = () => {
       handleSubmit,
    } = useForm({
       resolver: yupResolver(schema),
-      mode: "all",
+      mode: 'all',
    });
 
    const router = useRouter();
@@ -42,7 +40,7 @@ const RegForm = () => {
    const onSubmit = (data) => {
       dispatch(handleRegister(data));
       setTimeout(() => {
-         router.push("/");
+         router.push('/');
       }, 1500);
    };
    return (
@@ -54,7 +52,7 @@ const RegForm = () => {
             placeholder=" Enter your name"
             register={register}
             error={errors.name}
-         />{" "}
+         />{' '}
          <Textinput
             name="email"
             label="email"
@@ -76,9 +74,7 @@ const RegForm = () => {
             value={checked}
             onChange={() => setChecked(!checked)}
          />
-         <button className="btn btn-dark block w-full text-center">
-            Create an account
-         </button>
+         <button className="btn btn-dark block w-full text-center">Create an account</button>
       </form>
    );
 };

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import Textinput from "@/src/components/ui/Textinput";
+import React, { useState } from 'react';
+import Textinput from '@/src/components/ui/Textinput';
 
 const GlobalFilter = ({ filter, setFilter }) => {
    const [value, setValue] = useState(filter);
@@ -9,11 +9,7 @@ const GlobalFilter = ({ filter, setFilter }) => {
    };
    return (
       <div>
-         <Textinput
-            value={value || ""}
-            onChange={onChange}
-            placeholder="search..."
-         />
+         <Textinput value={value || ''} onChange={onChange} placeholder="search..." />
       </div>
    );
 };

@@ -1,13 +1,13 @@
-import React from "react";
-import Textinput from "@/src/components/ui/Textinput";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import React from 'react';
+import Textinput from '@/src/components/ui/Textinput';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 const schema = yup
    .object({
-      email: yup.string().email("Invalid email").required("Email is Required"),
-      password: yup.string().required("Password is Required"),
+      email: yup.string().email('Invalid email').required('Email is Required'),
+      password: yup.string().required('Password is Required'),
    })
    .required();
 const ForgotPass = () => {
@@ -33,9 +33,7 @@ const ForgotPass = () => {
             error={errors.email}
          />
 
-         <button className="btn btn-dark block w-full text-center">
-            Send recovery email
-         </button>
+         <button className="btn btn-dark block w-full text-center">Send recovery email</button>
       </form>
    );
 };

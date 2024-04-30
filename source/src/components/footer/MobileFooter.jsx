@@ -1,34 +1,28 @@
-import React from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import Icon from "@/src/components/ui/Icon";
-import Image from "next/image";
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Icon from '@/src/components/ui/Icon';
+import Image from 'next/image';
 
 const MobileFooter = () => {
    const router = useRouter();
    return (
-      <div className="bg-white bg-no-repeat custom-dropshadow footer-bg dark:bg-slate-700 flex justify-around items-center backdrop-filter backdrop-blur-[40px] fixed left-0 w-full z-[9999] bottom-0 py-[12px] px-4">
+      <div className="custom-dropshadow footer-bg fixed bottom-0 left-0 z-[9999] flex w-full items-center justify-around bg-white bg-no-repeat px-4 py-[12px] backdrop-blur-[40px] backdrop-filter dark:bg-slate-700">
          <Link href="chat">
             <div>
                <span
-                  className={` relative cursor-pointer rounded-full text-[20px] flex flex-col items-center justify-center mb-1
-         ${router.pathname === "chat"
-                        ? "text-primary-500"
-                        : "dark:text-white text-slate-900"
-                     }
+                  className={` relative mb-1 flex cursor-pointer flex-col items-center justify-center rounded-full text-[20px]
+         ${router.pathname === 'chat' ? 'text-primary-500' : 'text-slate-900 dark:text-white'}
           `}
                >
                   <Icon icon="heroicons-outline:mail" />
-                  <span className="absolute right-[5px] lg:top-0 -top-2 h-4 w-4 bg-red-500 text-[8px] font-semibold flex flex-col items-center justify-center rounded-full text-white z-[99]">
+                  <span className="absolute -top-2 right-[5px] z-[99] flex h-4 w-4 flex-col items-center justify-center rounded-full bg-red-500 text-[8px] font-semibold text-white lg:top-0">
                      10
                   </span>
                </span>
                <span
                   className={` block text-[11px]
-          ${router.pathname === "chat"
-                        ? "text-primary-500"
-                        : "text-slate-600 dark:text-slate-300"
-                     }
+          ${router.pathname === 'chat' ? 'text-primary-500' : 'text-slate-600 dark:text-slate-300'}
           `}
                >
                   Messages
@@ -37,25 +31,33 @@ const MobileFooter = () => {
          </Link>
          <Link
             href="profile"
-            className="relative bg-white bg-no-repeat backdrop-filter backdrop-blur-[40px] rounded-full footer-bg dark:bg-slate-700 h-[65px] w-[65px] z-[-1] -mt-[40px] flex justify-center items-center"
+            className="footer-bg relative z-[-1] -mt-[40px] flex h-[65px] w-[65px] items-center justify-center rounded-full bg-white bg-no-repeat backdrop-blur-[40px] backdrop-filter dark:bg-slate-700"
          >
-            <div className="h-[50px] w-[50px] rounded-full relative left-[0px] top-[0px] custom-dropshadow">
-               <Image className={` w-full h-full rounded-full ${router.pathname === "profile" ? "border-2 border-primary-500" : "border-2 border-slate-100"}              `}
-                  src={`/assets/images/users/user-1.jpg`} alt="" width={400} height={0}
+            <div className="custom-dropshadow relative left-[0px] top-[0px] h-[50px] w-[50px] rounded-full">
+               <Image
+                  className={` h-full w-full rounded-full ${router.pathname === 'profile' ? 'border-2 border-primary-500' : 'border-2 border-slate-100'}              `}
+                  src={`/assets/images/users/user-1.jpg`}
+                  alt=""
+                  width={400}
+                  height={0}
                />
             </div>
          </Link>
          <Link href="notifications">
             <div>
-               <span className={` 
-                     relative cursor-pointer rounded-full text-[20px] flex flex-col items-center justify-center mb-1
-                     ${router.pathname === "notifications" ? "text-primary-500" : "dark:text-white text-slate-900"}`}>
+               <span
+                  className={` 
+                     relative mb-1 flex cursor-pointer flex-col items-center justify-center rounded-full text-[20px]
+                     ${router.pathname === 'notifications' ? 'text-primary-500' : 'text-slate-900 dark:text-white'}`}
+               >
                   <Icon icon="heroicons-outline:bell" />
-                  <span className="absolute right-[17px] lg:top-0 -top-2 h-4 w-4 bg-red-500 text-[8px] font-semibold flex flex-col items-center justify-center rounded-full text-white z-[99]">
+                  <span className="absolute -top-2 right-[17px] z-[99] flex h-4 w-4 flex-col items-center justify-center rounded-full bg-red-500 text-[8px] font-semibold text-white lg:top-0">
                      2
                   </span>
                </span>
-               <span className={`block text-[11px] ${router.pathname === "notifications" ? "text-primary-500" : "text-slate-600 dark:text-slate-300"}`}>
+               <span
+                  className={`block text-[11px] ${router.pathname === 'notifications' ? 'text-primary-500' : 'text-slate-600 dark:text-slate-300'}`}
+               >
                   Notifications
                </span>
             </div>

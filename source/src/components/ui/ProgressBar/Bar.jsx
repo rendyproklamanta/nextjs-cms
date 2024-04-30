@@ -1,22 +1,20 @@
-import React from "react";
+import React from 'react';
 
 const Bar = ({ value, className, showValue, striped, animate }) => {
-  // striped style
+   // striped style
 
-  return (
-    <div
-      className={`flex flex-col text-center whitespace-nowrap justify-center h-full progress-bar  ${className} ${
-        striped ? "stripes" : ""
-      }
-      ${animate ? "animate-stripes" : ""}
+   return (
+      <div
+         className={`progress-bar flex h-full flex-col justify-center whitespace-nowrap text-center  ${className} ${
+            striped ? 'stripes' : ''
+         }
+      ${animate ? 'animate-stripes' : ''}
       `}
-      style={{ width: `${value}%` }}
-    >
-      {showValue && (
-        <span className="text-[10px] text-white font-bold">{value + "%"}</span>
-      )}
-    </div>
-  );
+         style={{ width: `${value}%` }}
+      >
+         {showValue && <span className="text-[10px] font-bold text-white">{value + '%'}</span>}
+      </div>
+   );
 };
 
 export default Bar;

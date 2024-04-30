@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 const Social = () => {
    return (
@@ -7,7 +7,7 @@ const Social = () => {
             <li className="flex-1">
                <a
                   href="#"
-                  className="inline-flex h-10 w-10 bg-[#1C9CEB] text-white text-2xl flex-col items-center justify-center rounded-full"
+                  className="inline-flex h-10 w-10 flex-col items-center justify-center rounded-full bg-[#1C9CEB] text-2xl text-white"
                >
                   <Image src={`/assets/images/icon/tw.svg`} alt="" width={400} height={0} />
                </a>
@@ -15,7 +15,7 @@ const Social = () => {
             <li className="flex-1">
                <a
                   href="#"
-                  className="inline-flex h-10 w-10 bg-[#395599] text-white text-2xl flex-col items-center justify-center rounded-full"
+                  className="inline-flex h-10 w-10 flex-col items-center justify-center rounded-full bg-[#395599] text-2xl text-white"
                >
                   <Image src={`/assets/images/icon/fb.svg`} alt="" width={400} height={0} />
                </a>
@@ -23,7 +23,7 @@ const Social = () => {
             <li className="flex-1">
                <a
                   href="#"
-                  className="inline-flex h-10 w-10 bg-[#0A63BC] text-white text-2xl flex-col items-center justify-center rounded-full"
+                  className="inline-flex h-10 w-10 flex-col items-center justify-center rounded-full bg-[#0A63BC] text-2xl text-white"
                >
                   <Image src={`/assets/images/icon/in.svg`} alt="" width={400} height={0} />
                </a>
@@ -31,7 +31,7 @@ const Social = () => {
             <li className="flex-1">
                <a
                   href="#"
-                  className="inline-flex h-10 w-10 bg-[#EA4335] text-white text-2xl flex-col items-center justify-center rounded-full"
+                  className="inline-flex h-10 w-10 flex-col items-center justify-center rounded-full bg-[#EA4335] text-2xl text-white"
                >
                   <Image src={`/assets/images/icon/gp.svg`} alt="" width={400} height={0} />
                </a>

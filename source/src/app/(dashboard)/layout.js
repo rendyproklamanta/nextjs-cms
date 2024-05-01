@@ -96,11 +96,10 @@ const LayoutDashboard = ({ children }) => {
                <Header className={width > breakpoints.xl ? switchHeaderClass() : ''} />
                {menuType === 'vertical' && width > breakpoints.xl && !menuHidden && <Sidebar />}
                <MobileMenu
-                  className={`${
-                     width < breakpoints.xl && mobileMenu
+                  className={`${width < breakpoints.xl && mobileMenu
                         ? 'visible left-0 z-[9999]  opacity-100'
                         : 'invisible left-[-300px] z-[-999]  opacity-0 '
-                  }`}
+                     }`}
                />
                {/* mobile menu overlay*/}
                {width < breakpoints.xl && mobileMenu && (
@@ -166,6 +165,10 @@ export default function RootLayout({ children }) {
    if (!isLoading && !userInfo) {
       redirect('/login');
    }
-
-   return <>{!isLoading && userInfo && <LayoutDashboard>{children}</LayoutDashboard>}</>;
+   
+   if (isLoading) {
+      return <Loading />;
+   } else {
+      return <>{userInfo && <LayoutDashboard>{children}</LayoutDashboard>}</>;
+   }
 }

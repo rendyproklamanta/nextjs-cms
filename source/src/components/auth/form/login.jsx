@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import Textinput from '@/src/components/ui/Textinput';
 import { useForm } from 'react-hook-form';
@@ -9,6 +11,7 @@ import { loginSlice } from '../../../store/slices/authSlice';
 import { usePostUserLoginMutation } from '@/src/store/api/authApi';
 import { useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { setCookie } from '@/src/utils/cookies';
 // import Select from '../../ui/Select';
 
 const schema = yup
@@ -20,14 +23,17 @@ const schema = yup
    .required();
 
 const LoginForm = () => {
-   const [userLogin, { error: errorPostLogin, isLoading }] = usePostUserLoginMutation();
+   const [userLogin, { error: errorPostLogin, isLoading }] =
+      usePostUserLoginMutation();
    const dispatch = useDispatch();
 
    useEffect(() => {
       if (errorPostLogin) {
          Swal.fire(
             'Failed!',
-            errorPostLogin.error ? errorPostLogin.error : errorPostLogin.data.message,
+            errorPostLogin.error
+               ? errorPostLogin.originalStatus + ' - ' + errorPostLogin.error
+               : errorPostLogin.data.message,
             'error',
          );
       }
@@ -50,7 +56,9 @@ const LoginForm = () => {
          .then((res) => {
             if (res?.success) {
                dispatch(loginSlice(res.data));
-               Swal.fire('Success', 'Login successfully', 'success');
+               // const result = JSON.stringify(res.data);
+               setCookie('isLoggedIn', '1', res.data.maxAge);
+               Swal.fire('Success!', res?.message, 'success');
             } else {
                Swal.fire('Failed!', res?.message, 'error');
             }

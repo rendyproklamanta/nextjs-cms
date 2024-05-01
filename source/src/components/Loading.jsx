@@ -2,8 +2,7 @@ import React from 'react';
 import useDarkMode from '@/src/hooks/useDarkMode';
 
 const Loading = () => {
-   const [isDark] = useDarkMode();
-   console.log('🚀 ~ file: Loading.jsx:6 ~ Loading ~ isDark:', isDark);
+   const [isDark] = useDarkMode(); // eslint-disable-line no-unused-vars
 
    return (
       <div className="app_height flex flex-col items-center justify-center">

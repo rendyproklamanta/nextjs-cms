@@ -15,11 +15,14 @@ import NextTopLoader from 'nextjs-toploader';
 
 import moment from 'moment';
 import 'moment/locale/id';
+import useTokenExpirationCheck from '../hooks/useTokenExpirationCheck';
 moment().locale('id');
 
 const roboto = Roboto({ weight: '400', subsets: ['latin'] });
 
 export default function AppLayout({ children }) {
+   useTokenExpirationCheck();
+
    return (
       <>
          <html lang="en">

@@ -8,8 +8,10 @@ import useDarkMode from '@/src/hooks/useDarkMode';
 import Image from 'next/image';
 import useUserInfo from '@/src/hooks/useUserInfo';
 import { redirect } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { getCookie } from '@/src/utils/cookies';
+import Loading from '@/src/components/Loading';
 
 // image import
 const LayoutLogin = () => {
@@ -45,8 +47,10 @@ const LayoutLogin = () => {
                               />
                            </Link>
                         </div>
-                        <div className="mb-4 text-center 1xl:mb-10">
-                           <h4 className="font-medium">Sign in to your account</h4>
+                        <div className="1xl:mb-10 mb-4 text-center">
+                           <h4 className="font-medium">
+                              Sign in to your account
+                           </h4>
                         </div>
                         <LoginForm />
                      </div>
@@ -59,17 +63,36 @@ const LayoutLogin = () => {
 };
 
 const LoginPage = ({ children }) => {
-   const [userInfo, isLoading] = useUserInfo();
+   const [userInfo, isLoading] = useUserInfo(); // eslint-disable-line no-unused-vars
+   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
    useEffect(() => {
-      if (!isLoading && userInfo) {
+      const fetchData = async () => {
+         try {
+            const get = await getCookie('isLoggedIn');
+            const data = get?.value;
+            if (data) {
+               setIsLoggedIn(true);
+            }
+         } catch (error) {
+            console.error('Error fetching data:', error);
+         }
+      };
+
+      fetchData();
+   }, []);
+
+   useEffect(() => {
+      if (!isLoading && userInfo && isLoggedIn) {
          redirect('/');
       }
-   }, [isLoading, userInfo]);
+   }, [isLoggedIn, isLoading, userInfo]);
 
-   return (
-      <>{!isLoading && !userInfo && <LayoutLogin>{children}</LayoutLogin>}</>
-   );
+   if (isLoading) {
+      return <Loading />;
+   } else {
+      return <>{!isLoggedIn && <LayoutLogin>{children}</LayoutLogin>}</>;
+   }
 };
 
 export default LoginPage;

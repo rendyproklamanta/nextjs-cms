@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import moment from 'moment';
-import { preeklampsiaResult } from '@/src/configs/constants';
+import { preeklampsiaResult } from '@/src/utils/constants';
 
 const MedicalRecord = ({ data, pmb, antenatal, preeklampsia }) => {
    const province = data?.province?.split(',');
@@ -45,8 +45,9 @@ const MedicalRecord = ({ data, pmb, antenatal, preeklampsia }) => {
                   <p className="w-[200px]">Tanggal pemeriksaan</p>
                   <p>
                      :{' '}
-                     {moment(data && data?.medical[0]?.createdAt).format('dddd, DD-MM-YYYY HH:mm') +
-                        ' WIB'}
+                     {moment(data && data?.medical[0]?.createdAt).format(
+                        'dddd, DD-MM-YYYY HH:mm',
+                     ) + ' WIB'}
                   </p>
                </div>
             </div>
@@ -125,7 +126,9 @@ const MedicalRecord = ({ data, pmb, antenatal, preeklampsia }) => {
 
                <div className="mt-5">
                   <div className="flex">
-                     <p className="w-[200px] font-bold">PEMERIKSAAN ANTENATAL CARE</p>
+                     <p className="w-[200px] font-bold">
+                        PEMERIKSAAN ANTENATAL CARE
+                     </p>
                      <p></p>
                   </div>
                   <div className="flex">
@@ -141,11 +144,15 @@ const MedicalRecord = ({ data, pmb, antenatal, preeklampsia }) => {
                      <p>: {antenatal?.bloodPressure}</p>
                   </div>
                   <div className="flex">
-                     <p className="w-[200px]">Ukur LILA (Lingkar Lengan Atas)</p>
+                     <p className="w-[200px]">
+                        Ukur LILA (Lingkar Lengan Atas)
+                     </p>
                      <p>: {antenatal?.lila}</p>
                   </div>
                   <div className="flex">
-                     <p className="w-[200px]">Pengukuran DJJ (Denyut Jantung Janin)</p>
+                     <p className="w-[200px]">
+                        Pengukuran DJJ (Denyut Jantung Janin)
+                     </p>
                      <p>: {antenatal?.measurementDjj}</p>
                   </div>
                   <div className="flex">
@@ -176,7 +183,9 @@ const MedicalRecord = ({ data, pmb, antenatal, preeklampsia }) => {
 
                <div className="mt-5">
                   <div className="flex">
-                     <p className="w-[200px] font-bold">PEMERIKSAAN DETEKSI DINI PREEKLAMSIA</p>
+                     <p className="w-[200px] font-bold">
+                        PEMERIKSAAN DETEKSI DINI PREEKLAMSIA
+                     </p>
                      <p></p>
                   </div>
                   <div className="flex">

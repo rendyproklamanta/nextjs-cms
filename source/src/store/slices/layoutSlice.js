@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // theme config import
-import themeConfig from '@/src/configs/themeConfig';
+import themeConfig from '@/src/utils/themeConfig';
 
 const initialState = {
    isRTL: themeConfig.layout.isRTL,

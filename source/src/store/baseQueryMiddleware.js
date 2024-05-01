@@ -22,18 +22,14 @@ const baseQueryMiddleware = (baseUrl) => async (args, api, extraOptions) => {
 
    if (result?.error?.status === 'FETCH_ERROR') {
       error = result?.error?.status;
-   }
-
-   if (result?.error?.status === 500) {
+   } else if (result?.error?.status === 500) {
       error = result?.error?.data?.message;
+   } else {
+      error = result?.error?.data?.status;
    }
 
    if (result?.error?.status === 401 && result?.error?.data?.error?.name !== 'TokenExpiredError') {
-      error = result.error.data.message.code ?? result.error.data.message;
-      errorAuth = true;
-   }
 
-   if (result?.error?.data?.error?.name === 'TokenExpiredError') {
       const refreshResult = await baseQuery(baseUrl)(
          {
             url: process.env.NEXT_PUBLIC_API_URL + 'auths/token/refresh',

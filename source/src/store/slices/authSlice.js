@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import { deleteCookie } from '@/src/utils/cookies';
 // import { cookies } from 'next/headers';
 
 // const initialUsers = () => {
@@ -142,16 +143,17 @@ export const authSlice = createSlice({
       },
       handleLogout: (state, action) => {
          state.userinfo = action.payload;
+         deleteCookie('isLoggedIn');
+
          // remove from local storage
          if (typeof window !== 'undefined') {
             window?.localStorage.removeItem('userinfo');
          }
-
-         Swal.fire('Success', 'User logged out successfully', 'success');
+         Swal.fire('Success!', 'Logout success', 'success');
 
          setTimeout(() => {
-            window.location.reload();
-         }, 1000);
+            window.location.href = '/login';
+         }, 10);
       },
    },
 });

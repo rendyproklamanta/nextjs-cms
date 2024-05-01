@@ -1,32 +1,14 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-// import Swal from "sweetalert2";
-
-const baseQuery = fetchBaseQuery({
-   credentials: 'include',
-   baseUrl: process.env.NEXT_PUBLIC_API_URL + 'auths',
-});
-
-// const baseQueryMiddleware = async (args, api, extraOptions) => {
-//    let result = await baseQuery(args, api, extraOptions);
-//    if (result.error && result.error.status === "FETCH_ERROR") {
-//       return Swal.fire(
-//          'Failed!',
-//          'Network error',
-//          'error'
-//       );
-//    }
-
-//    return result;
-// };
+import { createApi } from '@reduxjs/toolkit/query/react';
+import baseQueryMiddleware from '../baseQueryMiddleware';
 
 export const authApi = createApi({
    reducerPath: 'authApi',
-   baseQuery: baseQuery,
+   baseQuery: baseQueryMiddleware(process.env.NEXT_PUBLIC_API_URL + 'auths'),
    tagTypes: [],
    endpoints: (builder) => ({
       postUserLogin: builder.mutation({
          query: (payload) => ({
-            url: '/login',
+            url: '/method/local',
             method: 'POST',
             body: payload,
          }),

@@ -1,7 +1,7 @@
 'use client';
 
-import { redirect } from 'next/navigation';
-import { Suspense } from 'react';
+import { useRouter } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { ToastContainer } from 'react-toastify';
 import Sidebar from '@/src/components/sidebar';
@@ -20,10 +20,11 @@ import useNavbarType from '@/src/hooks/useNavbarType';
 import { motion } from 'framer-motion';
 import MobileFooter from '@/src/components/footer/MobileFooter';
 import Header from '@/src/components/header';
-import useUserInfo from '@/src/hooks/useUserInfo';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+import { getCookie } from '@/src/utils/cookies';
+import useTokenExpirationCheck from '@/src/hooks/useTokenExpirationCheck';
 
 const LayoutDashboard = ({ children }) => {
    const { width, breakpoints } = useWidth();
@@ -97,8 +98,8 @@ const LayoutDashboard = ({ children }) => {
                {menuType === 'vertical' && width > breakpoints.xl && !menuHidden && <Sidebar />}
                <MobileMenu
                   className={`${width < breakpoints.xl && mobileMenu
-                        ? 'visible left-0 z-[9999]  opacity-100'
-                        : 'invisible left-[-300px] z-[-999]  opacity-0 '
+                     ? 'visible left-0 z-[9999]  opacity-100'
+                     : 'invisible left-[-300px] z-[-999]  opacity-0 '
                      }`}
                />
                {/* mobile menu overlay*/}
@@ -160,15 +161,37 @@ const LayoutDashboard = ({ children }) => {
 };
 
 export default function RootLayout({ children }) {
-   const [userInfo, isLoading] = useUserInfo();
+   const [isLoggedIn, setIsLoggedIn] = useState(false);
+   const [isLoading, setIsLoading] = useState(true);
+   const router = useRouter();
 
-   if (!isLoading && !userInfo) {
-      redirect('/login');
-   }
-   
-   if (isLoading) {
+   // middleware check token, if not do login
+   useTokenExpirationCheck();
+
+   useEffect(() => {
+      const fetchData = async () => {
+         try {
+            const get = await getCookie('isLoggedIn');
+            const data = get?.value;
+            if (data) {
+               setIsLoggedIn(true);
+            } else {
+               router.push('/login');
+            }
+            setIsLoading(false);
+         } catch (error) {
+            console.error('Error fetching data:', error);
+         }
+      };
+
+      fetchData();
+   }, [router]);
+
+
+   if (isLoading && !isLoggedIn) {
       return <Loading />;
    } else {
-      return <>{userInfo && <LayoutDashboard>{children}</LayoutDashboard>}</>;
+      return (<LayoutDashboard>{children}</LayoutDashboard>);
    }
+
 }

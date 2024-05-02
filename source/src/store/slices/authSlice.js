@@ -1,9 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
-import Swal from 'sweetalert2';
-import { deleteCookie } from '@/src/utils/cookies';
-// import { cookies } from 'next/headers';
+import { clearCookie } from '@/src/utils/cookies';
 
 // const initialUsers = () => {
 //    if (typeof window !== "undefined") {
@@ -54,21 +52,12 @@ const initialUser = () => {
    return false;
 };
 
-const initialIsAuth = () => {
-   if (typeof window !== 'undefined') {
-      const item = window?.localStorage.getItem('isAuth');
-      return item !== 'undefined' ? JSON.parse(item) : false;
-   }
-   return false;
-};
-
 export const authSlice = createSlice({
    name: 'auth',
    initialState: {
       userinfo: initialUser(),
       accessToken: initialAccessToken(),
       refreshToken: initialRefreshToken(),
-      isAuth: initialIsAuth(),
    },
    reducers: {
       handleRegister: (state, action) => {
@@ -109,29 +98,10 @@ export const authSlice = createSlice({
       },
 
       loginSlice: (state, action) => {
-         state.userinfo = action.payload;
          state.accessToken = action.payload.accessToken;
-         state.refreshToken = action.payload.refreshToken;
          // save in local storage
          if (typeof window !== 'undefined') {
-            window?.localStorage.setItem('userinfo', JSON.stringify(state.userinfo));
             window?.localStorage.setItem('accessToken', JSON.stringify(state.accessToken));
-            window?.localStorage.setItem('refreshToken', JSON.stringify(state.refreshToken));
-
-            // const userData = {
-            //    userinfo: JSON.stringify(state.userinfo),
-            //    accessToken: JSON.stringify(state.accessToken),
-            //    refreshToken: JSON.stringify(state.refreshToken),
-            // };
-            // const oneDay = 24 * 60 * 60 * 1000;
-
-            // cookies().set({
-            //    name: 'userData',
-            //    value: userData,
-            //    httpOnly: true,
-            //    path: '/',
-            //    expires: Date.now() - oneDay,
-            // });
          }
       },
       refreshAccessTokenSlice: (state, action) => {
@@ -141,19 +111,12 @@ export const authSlice = createSlice({
             window?.localStorage.setItem('accessToken', JSON.stringify(state.accessToken));
          }
       },
-      handleLogout: (state, action) => {
-         state.userinfo = action.payload;
-         deleteCookie('isLoggedIn');
-
+      handleLogout: () => {
+         clearCookie();
          // remove from local storage
          if (typeof window !== 'undefined') {
-            window?.localStorage.removeItem('userinfo');
+            window?.localStorage.removeItem('accessToken');
          }
-         Swal.fire('Success!', 'Logout success', 'success');
-
-         setTimeout(() => {
-            window.location.href = '/login';
-         }, 10);
       },
    },
 });

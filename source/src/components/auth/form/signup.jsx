@@ -18,7 +18,9 @@ const schema = yup
          .max(20, "Password shouldn't be more than 20 characters")
          .required('Please enter password'),
       // confirm password
-      confirmpassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
+      confirmpassword: yup
+         .string()
+         .oneOf([yup.ref('password'), null], 'Passwords must match'),
    })
    .required();
 
@@ -40,7 +42,7 @@ const RegForm = () => {
    const onSubmit = (data) => {
       dispatch(handleRegister(data));
       setTimeout(() => {
-         router.push('/');
+         router.push('/dashboard');
       }, 1500);
    };
    return (
@@ -74,7 +76,9 @@ const RegForm = () => {
             value={checked}
             onChange={() => setChecked(!checked)}
          />
-         <button className="btn btn-dark block w-full text-center">Create an account</button>
+         <button className="btn btn-dark block w-full text-center">
+            Create an account
+         </button>
       </form>
    );
 };

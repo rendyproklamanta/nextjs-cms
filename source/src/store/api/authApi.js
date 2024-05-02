@@ -14,7 +14,7 @@ export const authApi = createApi({
          }),
       }),
       getUserInfo: builder.query({
-         query: ({ token }) => `/tokendata?token=${token}`,
+         query: () => `/token/data`,
       }),
    }),
 });

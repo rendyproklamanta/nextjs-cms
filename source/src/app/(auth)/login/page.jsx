@@ -6,8 +6,7 @@ import LoginForm from '@/src/components/auth/form/login';
 import Social from '@/src/components/auth/social';
 import useDarkMode from '@/src/hooks/useDarkMode';
 import Image from 'next/image';
-import useUserInfo from '@/src/hooks/useUserInfo';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { getCookie } from '@/src/utils/cookies';
@@ -63,8 +62,9 @@ const LayoutLogin = () => {
 };
 
 const LoginPage = ({ children }) => {
-   const [userInfo, isLoading] = useUserInfo(); // eslint-disable-line no-unused-vars
    const [isLoggedIn, setIsLoggedIn] = useState(false);
+   const [isLoading, setIsLoading] = useState(true);
+   const router = useRouter();
 
    useEffect(() => {
       const fetchData = async () => {
@@ -77,16 +77,17 @@ const LoginPage = ({ children }) => {
          } catch (error) {
             console.error('Error fetching data:', error);
          }
+         setIsLoading(false);
       };
 
       fetchData();
    }, []);
 
    useEffect(() => {
-      if (!isLoading && userInfo && isLoggedIn) {
-         redirect('/');
+      if (!isLoading && isLoggedIn) {
+         router.push('/dashboard');
       }
-   }, [isLoggedIn, isLoading, userInfo]);
+   }, [isLoggedIn, isLoading, router]);
 
    if (isLoading) {
       return <Loading />;

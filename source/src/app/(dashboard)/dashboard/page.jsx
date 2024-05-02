@@ -1,48 +1,10 @@
 'use client';
 
-import Button from '@/src/components/ui/Button';
-//import PreeklamsiaChart from "@/src/components/chart/PreeklamsiaChart";
-import Card from '@/src/components/ui/Card';
-import useUserInfo from '@/src/hooks/useUserInfo';
-import moment from 'moment';
-import React, { useState } from 'react';
-import Flatpickr from 'react-flatpickr';
+import { useGetUserInfoQuery } from '@/src/store/api/authApi';
+import React from 'react';
 
 const DashboardPage = () => {
-   const [userInfo] = useUserInfo();
-
-   const firstDate = new Date(new Date().getFullYear(), 0, 1);
-   const lastDate = new Date(new Date().getFullYear(), 12, 0);
-
-   const [pickerDate1, setPickerDate1] = useState(
-      moment(firstDate).format('YYYY-MM-DD'),
-   );
-   const [pickerDate2, setPickerDate2] = useState(
-      moment(lastDate).format('YYYY-MM-DD'),
-   );
-
-   const resetDate = () => {
-      setPickerDate1(firstDate);
-      setPickerDate2(lastDate);
-   };
-
-   const options = {
-      dateFormat: 'Y-m-d',
-   };
-
-   const handlePrintClick = (id) => {
-      const printableDiv = document.getElementById(id);
-      if (printableDiv) {
-         const printWindow = window.open('', '', '');
-         printWindow.document.write(
-            '<html><head><style>@page { size: landscape; }</style></head><body>',
-         );
-         printWindow.document.write(printableDiv.innerHTML);
-         printWindow.document.write('</body></html>');
-         printWindow.document.close();
-         printWindow.print();
-      }
-   };
+   const { isLoading, data: res } = useGetUserInfoQuery();
 
    return (
       <>
@@ -60,7 +22,7 @@ const DashboardPage = () => {
                         Selamat Datang..
                      </p>
                      <p className="block text-xl capitalize text-white md:text-3xl">
-                        {userInfo.name}
+                        {!isLoading && res?.data?.name}
                      </p>
                   </div>
                </div>

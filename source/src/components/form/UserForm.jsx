@@ -29,8 +29,10 @@ const UserForm = ({ params }) => {
       data: res,
       refetch,
    } = useGetUserQuery(params?.id, { skip: params?.id === undefined });
-   const [createUser] = useCreateUserMutation();
-   const [updateUser] = useUpdateUserMutation();
+   const [createUser, { isLoading: isLoadingCreateUser }] =
+      useCreateUserMutation();
+   const [updateUser, { isLoading: isLoadingUpdateUser }] =
+      useUpdateUserMutation();
 
    const router = useRouter();
    const page = 'user';
@@ -65,26 +67,35 @@ const UserForm = ({ params }) => {
                }
             })
             .catch((error) => {
-               Swal.fire('Failed!', error.data.message, 'error');
+               Swal.fire('Failed!', error?.data?.message, 'error');
             });
       } else {
          createUser(formData)
             .unwrap()
             .then((res) => {
                if (res.success) {
-                  Swal.fire('Success', `${page} Berhasil Ditambahkan`, 'success');
+                  Swal.fire(
+                     'Success',
+                     `${page} Berhasil Ditambahkan`,
+                     'success',
+                  );
                   router.push(`/${page}/list`);
                }
             })
             .catch((error) => {
-               Swal.fire('Failed!', error.data.message, 'error');
+               Swal.fire('Failed!', error?.data?.message, 'error');
             });
       }
    };
 
    return (
-      <Card title={`${!isLoading && res?.data ? `Edit ${page}` : `Tambah ${page}`}`}>
-         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+      <Card
+         title={`${!isLoading && res?.data ? `Edit ${page}` : `Tambah ${page}`}`}
+      >
+         <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="grid grid-cols-1 gap-5 lg:grid-cols-2"
+         >
             <div className="my-1">
                <Textinput
                   name="username"
@@ -132,9 +143,21 @@ const UserForm = ({ params }) => {
                >
                   {'< Kembali'}
                </span>
-               <button type="submit" className="btn btn-dark w-[150px] rounded-lg">
-                  Simpan Data
-               </button>
+               {isLoadingCreateUser || isLoadingUpdateUser ? (
+                  <div className="btn btn-dark block w-[150px] text-center">
+                     <div
+                        className="inline-block h-5 w-5 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                        role="status"
+                     ></div>
+                  </div>
+               ) : (
+                  <button
+                     type="submit"
+                     className="btn btn-dark w-[150px] rounded-lg"
+                  >
+                     Simpan Data
+                  </button>
+               )}
             </div>
          </form>
       </Card>

@@ -31,7 +31,7 @@ export const userApi = createApi({
          keepUnusedDataFor: 0, // set cache | in second | 0 = no-cache
       }),
       getUserAll: builder.query({
-         query: () => `/`,
+         query: () => `/all`,
          keepUnusedDataFor: 0, // set cache | in second | 0 = no-cache
       }),
       getDummyDataTable: builder.query({

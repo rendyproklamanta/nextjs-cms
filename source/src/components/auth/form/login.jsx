@@ -12,6 +12,7 @@ import { usePostUserLoginMutation } from '@/src/store/api/authApi';
 import { useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { setCookie } from '@/src/utils/cookies';
+import { useRouter } from 'next/navigation';
 // import Select from '../../ui/Select';
 
 const schema = yup
@@ -23,17 +24,19 @@ const schema = yup
    .required();
 
 const LoginForm = () => {
+   const [checkedRemember, setCheckedRemember] = useState(false);
    const [userLogin, { error: errorPostLogin, isLoading }] =
       usePostUserLoginMutation();
    const dispatch = useDispatch();
+   const router = useRouter();
 
    useEffect(() => {
       if (errorPostLogin) {
          Swal.fire(
             'Failed!',
-            errorPostLogin.error
-               ? errorPostLogin.originalStatus + ' - ' + errorPostLogin.error
-               : errorPostLogin.data.message,
+            errorPostLogin?.error
+               ? errorPostLogin?.originalStatus + ' - ' + errorPostLogin?.error
+               : errorPostLogin?.data?.message,
             'error',
          );
       }
@@ -51,21 +54,24 @@ const LoginForm = () => {
    });
 
    const onSubmit = (data) => {
-      userLogin(data)
+      const additionals = {
+         rememberMe: checkedRemember,
+      };
+      const formData = { ...data, ...additionals };
+
+      userLogin(formData)
          .unwrap()
          .then((res) => {
             if (res?.success) {
-               dispatch(loginSlice(res.data));
                // const result = JSON.stringify(res.data);
-               setCookie('isLoggedIn', '1', res.data.maxAge);
-               Swal.fire('Success!', res?.message, 'success');
+               dispatch(loginSlice(res.data));
+               setCookie('isLoggedIn', true, res.data.maxAge);
+               router.push('/dashboard');
             } else {
                Swal.fire('Failed!', res?.message, 'error');
             }
          });
    };
-
-   const [checked, setChecked] = useState(false);
 
    return (
       <form
@@ -96,8 +102,8 @@ const LoginForm = () => {
          />
          <div className="flex justify-between">
             <Checkbox
-               value={checked}
-               onChange={() => setChecked(!checked)}
+               value={checkedRemember}
+               onChange={() => setCheckedRemember(!checkedRemember)}
                label="Keep me signed in"
             />
             {/* <Link
@@ -109,14 +115,14 @@ const LoginForm = () => {
          </div>
 
          {isLoading ? (
-            <div className="btn btn-dark block w-full text-center">
+            <button type="button" className="btn btn-dark block w-full text-center">
                <div
                   className="inline-block h-5 w-5 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
                   role="status"
                ></div>
-            </div>
+            </button>
          ) : (
-            <button className="btn btn-dark block w-full text-center">
+            <button type="submit" className="btn btn-dark block w-full text-center">
                Sign in
             </button>
          )}

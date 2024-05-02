@@ -1,8 +1,9 @@
+import { WEBSITE_DESC } from '@/src/constant/setting';
 import LoginPage from './page';
 
 export const metadata = {
    title: 'Login',
-   description: 'Welcome to Next.js',
+   description: WEBSITE_DESC,
 };
 
 export default function LoginLayout({ children }) {

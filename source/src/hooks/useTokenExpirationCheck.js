@@ -1,35 +1,27 @@
-import { useEffect, useState } from 'react';
-import { redirect, usePathname } from 'next/navigation';
+import { useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { getCookie } from '../utils/cookies';
 
 const useTokenExpirationCheck = () => {
    const pathname = usePathname();
-   const [isLoggedIn, setIsLoggedIn] = useState(true);
+   const router = useRouter();
 
    useEffect(() => {
-      if (pathname !== '/login') {
-         const fetchData = async () => {
-            try {
-               const get = await getCookie('isLoggedIn');
-               const data = get?.value;
-               if (!data) {
-                  setIsLoggedIn(false);
-               }
-            } catch (error) {
-               console.error('Error fetching data:', error);
+      const fetchData = async () => {
+         try {
+            const get = await getCookie('isLoggedIn');
+            const data = get?.value;
+            if (!data) {
+               router.push('/login');
             }
-         };
+         } catch (error) {
+            console.error('Error fetching data:', error);
+         }
+      };
 
-         fetchData();
-      }
+      fetchData();
 
-   }, [pathname]);
-
-   useEffect(() => {
-      if (!isLoggedIn) {
-         redirect('/login')
-      }
-   }, [isLoggedIn]);
+   }, [pathname, router]);
 
    return null;
 };

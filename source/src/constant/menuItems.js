@@ -3,7 +3,7 @@ export const menuItems = [
       title: 'Beranda',
       isHide: true,
       icon: 'heroicons:home',
-      link: '',
+      link: 'dashboard',
    },
    {
       title: 'User',

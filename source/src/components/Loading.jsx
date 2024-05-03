@@ -7,7 +7,7 @@ const Loading = () => {
    return (
       <div className="app_height flex flex-col items-center justify-center">
          <svg
-            className="h-6 w-6 animate-spin ltr:-ml-1 ltr:mr-3 rtl:-mr-1 rtl:ml-3
+            className="h-10 w-10 animate-spin ltr:-ml-1 ltr:mr-3 rtl:-mr-1 rtl:ml-3
          "
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -28,7 +28,9 @@ const Loading = () => {
             ></path>
          </svg>
 
-         <span className=" mt-1 inline-block text-sm  font-medium">Loading ...</span>
+         <span className="font-1xl mt-3 inline-block text-large">
+            Loading ...
+         </span>
       </div>
    );
 };

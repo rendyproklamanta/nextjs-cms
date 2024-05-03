@@ -1,120 +1,151 @@
 'use client';
 
-/* eslint-disable react/display-name */
-import React from 'react';
-import { useDeleteUserMutation, useGetUserAllQuery } from '@/src/store/api/userApi';
-import TableData from '@/src/components/TableData';
-import Tooltip from '@/src/components/ui/Tooltip';
-import Link from 'next/link';
-import { Icon } from '@iconify/react';
-import { useEffect } from 'react';
-import moment from 'moment/moment';
-import Swal from 'sweetalert2';
-import Loading from '@/src/app/loading';
+// IMPORTS
+import { createMRTColumnHelper } from 'material-react-table';
+import { mkConfig, generateCsv, download } from 'export-to-csv';
+import {
+   useGetDummyDataAllMutation,
+   useGetDummyDataFilterMutation,
+   useGetDummyDataTableQuery,
+} from '@/src/store/api/userApi';
+import { useEffect, useState } from 'react';
+import MuiTable from '../ui/MuiTable';
+
+const csvConfig = mkConfig({
+   fieldSeparator: ',',
+   decimalSeparator: '.',
+   useKeysAsHeaders: true,
+});
 
 const UserTable = () => {
-   const { isLoading, data: res, refetch } = useGetUserAllQuery();
+   const [pagination, setPagination] = useState({
+      pageIndex: 0,
+      pageSize: 10, //customize the default page size
+   });
+   const page = pagination.pageIndex;
+   const pageSize = pagination.pageSize;
 
-   useEffect(() => {
-      refetch();
-   }, [refetch]);
+   // STATE
+   const [columnFilters, setColumnFilters] = useState([]);
+   const [data, setData] = useState([]);
+   const [totalRow, setTotalRow] = useState('');
 
-   const [deleteUser] = useDeleteUserMutation();
+   // Handling API
+   const { isFetching, data: dataDummy } = useGetDummyDataTableQuery({
+      page,
+      pageSize,
+   });
+   const [handleExportData, { isLoading: isLoadingExport, data: dataExport }] =
+      useGetDummyDataAllMutation();
+   const [handleFilterData] = useGetDummyDataFilterMutation();
 
-   const handleDelete = (id) => {
-      Swal.fire({
-         title: 'Yakin untuk menghapus data ini?',
-         icon: 'info',
-         confirmButtonText: 'Konfirmasi',
-         showCancelButton: true,
-      }).then((result) => {
-         if (result['isConfirmed']) {
-            deleteUser(id)
-               .unwrap()
-               .then((res) => {
-                  if (res.success) {
-                     Swal.fire('Success', 'User Berhasil Dihapus', 'success');
-                     refetch();
-                  }
-               })
-               .catch((error) => {
-                  Swal.fire('Failed!', error.data.message, 'error');
-               });
-         }
-      });
+   // Format the Data as we like to show in table
+   const dataFormat = (item) => {
+      return {
+         id: item.id,
+         firstName: item.firstName,
+         lastName: item.lastName,
+         company: item.company,
+         city: item.city,
+         country: item.country,
+      };
    };
 
-   const COLUMNS = [
-      {
-         header: 'username',
-         accessor: 'username',
-         Cell: (row) => {
-            return <span>{row?.cell?.value}</span>;
-         },
-      },
-      {
-         header: 'nama',
-         accessor: 'name',
-         Cell: (row) => {
-            return <span>{row?.cell?.value}</span>;
-         },
-      },
-      {
-         header: 'NAMA PRAKTEK MANDIRI BIDAN (PMB)',
-         accessor: 'pmb',
-         Cell: (row) => {
-            return <span>{row?.cell?.value}</span>;
-         },
-      },
-      {
-         header: 'tanggal dibuat',
-         accessor: 'createdAt',
-         Cell: (row) => {
-            return <span>{moment(row?.cell?.value).format('DD-MM-YYYY')}</span>;
-         },
-      },
-      {
-         header: 'action',
-         accessor: '_id',
-         // eslint-disable-next-line no-unused-vars
-         Cell: (row) => {
-            return (
-               <div className="flex justify-center space-x-3 rtl:space-x-reverse">
-                  <Tooltip content="Edit" placement="top" arrow animation="shift-away">
-                     <Link href={row?.cell?.value}>
-                        <button className="action-btn" type="button">
-                           <Icon icon="heroicons:pencil-square" />
-                        </button>
-                     </Link>
-                  </Tooltip>
-                  <Tooltip
-                     content="Delete"
-                     placement="top"
-                     arrow
-                     animation="shift-away"
-                     theme="danger"
-                  >
-                     <button
-                        className="action-btn"
-                        type="button"
-                        onClick={() => handleDelete(row?.cell?.value)}
-                     >
-                        <Icon icon="heroicons:trash" />
-                     </button>
-                  </Tooltip>
-               </div>
-            );
-         },
-      },
+   const filter = [...columnFilters];
+   const payload = { page, pageSize, filter };
+
+   useEffect(() => {
+      if (columnFilters.length) {
+         handleFilterData(payload)
+            .unwrap()
+            .then((res) => {
+               setData(res?.data);
+               setTotalRow(res?.totalRow);
+            })
+            .catch((error) => {
+               console.log(
+                  '🚀 ~ file: ReportDailyTable.jsx:37 ~ .then ~ error:',
+                  error,
+               );
+            });
+      } else {
+         // Set Data
+         if (!isFetching && dataDummy?.data) {
+            setData(dataDummy?.data);
+            setTotalRow(dataDummy?.totalRow);
+         }
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [columnFilters, handleFilterData, dataDummy, isFetching]);
+
+   // Handle export all data
+   useEffect(() => {
+      if (!isLoadingExport && dataExport?.data) {
+         const data = dataExport?.data?.map((item) => dataFormat(item));
+
+         const csv = generateCsv(csvConfig)(data);
+         download(csvConfig)(csv);
+      }
+   }, [isLoadingExport, dataExport?.data]);
+
+   // Set data
+   let dataTable = [];
+   let formattedNumber = 0;
+   if (data) {
+      dataTable = data?.map((item) => dataFormat(item));
+      formattedNumber = totalRow
+         ? totalRow.toLocaleString('id-ID').replace(/,/g, '.')
+         : 0;
+   }
+
+   // Set Coloumn
+   const columnHelper = createMRTColumnHelper();
+   const columns = [
+      columnHelper.accessor('id', {
+         header: 'ID',
+         size: 100,
+         footer: 'Total Data', //simple string header
+      }),
+      columnHelper.accessor('firstName', {
+         header: 'First Name',
+         size: 100,
+         Cell: ({ renderedCellValue }) => (
+            <span style={{ color: 'red' }}>{renderedCellValue}</span>
+         ),
+         Footer: () => <span color="warning.main">{formattedNumber}</span>,
+      }),
+      columnHelper.accessor('lastName', {
+         header: 'Last Name',
+         size: 100,
+      }),
+      columnHelper.accessor('company', {
+         header: 'Company',
+         size: 100,
+      }),
+      columnHelper.accessor('city', {
+         header: 'City',
+         size: 100,
+      }),
+      columnHelper.accessor('country', {
+         header: 'Country',
+         size: 100,
+      }),
    ];
 
-   if (isLoading) {
-      return <Loading />;
-   }
-
-   if (!isLoading && res?.data) {
-      return <TableData title={'List User'} columns={COLUMNS} data={res?.data} />;
-   }
+   return (
+      <MuiTable
+         columns={columns}
+         data={dataTable}
+         isFetching={isFetching}
+         pagination={pagination}
+         setPagination={setPagination}
+         totalRow={totalRow}
+         handleExportData={handleExportData}
+         csvConfig={csvConfig}
+         columnFilters={columnFilters}
+         setColumnFilters={setColumnFilters}
+      />
+   );
 };
 
 export default UserTable;

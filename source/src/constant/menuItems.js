@@ -21,18 +21,6 @@ export const menuItems = [
          },
       ],
    },
-   {
-      title: 'Laporan',
-      icon: 'heroicons:clipboard-document-list',
-      link: '#',
-      isHide: true,
-      child: [
-         {
-            childtitle: 'Laporan Harian',
-            childlink: 'report/daily',
-         },
-      ],
-   },
 ];
 
 export default menuItems;

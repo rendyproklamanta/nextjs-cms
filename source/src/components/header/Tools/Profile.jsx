@@ -9,9 +9,10 @@ import Image from 'next/image';
 import { useGetUserInfoQuery } from '@/src/store/api/authApi';
 
 const Profile = () => {
+   const { isLoading, data: res } = useGetUserInfoQuery();
+
    const dispatch = useDispatch();
    const router = useRouter();
-   const { isLoading, data: res } = useGetUserInfoQuery();
 
    const ProfileLabel = () => {
       return (
@@ -75,7 +76,7 @@ const Profile = () => {
                         active
                            ? 'bg-slate-100 text-slate-900 dark:bg-slate-600 dark:bg-opacity-50 dark:text-slate-300'
                            : 'text-slate-600 dark:text-slate-300'
-                     } block     ${
+                     } block ${
                         item.hasDivider
                            ? 'border-t border-slate-100 dark:border-slate-700'
                            : ''

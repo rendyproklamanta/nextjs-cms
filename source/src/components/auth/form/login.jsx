@@ -11,8 +11,6 @@ import { loginSlice } from '../../../store/slices/authSlice';
 import { usePostUserLoginMutation } from '@/src/store/api/authApi';
 import { useEffect } from 'react';
 import Swal from 'sweetalert2';
-import { setCookie } from '@/src/utils/cookies';
-import { useRouter } from 'next/navigation';
 // import Select from '../../ui/Select';
 
 const schema = yup
@@ -28,8 +26,6 @@ const LoginForm = () => {
    const [userLogin, { error: errorPostLogin, isLoading }] =
       usePostUserLoginMutation();
    const dispatch = useDispatch();
-   const router = useRouter();
-
    useEffect(() => {
       if (errorPostLogin) {
          Swal.fire(
@@ -65,8 +61,6 @@ const LoginForm = () => {
             if (res?.success) {
                // const result = JSON.stringify(res.data);
                dispatch(loginSlice(res.data));
-               setCookie('isLoggedIn', true, res.data.maxAge);
-               router.push('/dashboard');
             } else {
                Swal.fire('Failed!', res?.message, 'error');
             }
@@ -115,14 +109,20 @@ const LoginForm = () => {
          </div>
 
          {isLoading ? (
-            <button type="button" className="btn btn-dark block w-full text-center">
+            <button
+               type="button"
+               className="btn btn-dark block w-full text-center"
+            >
                <div
                   className="inline-block h-5 w-5 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
                   role="status"
                ></div>
             </button>
          ) : (
-            <button type="submit" className="btn btn-dark block w-full text-center">
+            <button
+               type="submit"
+               className="btn btn-dark block w-full text-center"
+            >
                Sign in
             </button>
          )}

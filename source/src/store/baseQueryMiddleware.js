@@ -1,14 +1,15 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 import { handleLogout, refreshAccessTokenSlice } from './slices/authSlice';
 import { toast } from 'react-toastify';
+import { getCookie } from '../utils/cookies';
 
 const baseQuery = (baseUrl) =>
    fetchBaseQuery({
       baseUrl: baseUrl,
       credentials: 'include',
-      prepareHeaders: (headers, { getState }) => {
-         const { accessToken } = getState().auth;
-         headers.set('Authorization', `Bearer ${accessToken}`);
+      prepareHeaders: async (headers) => {
+         const cookie = await getCookie('accessToken');
+         headers.set('Authorization', `Bearer ${cookie?.value}`);
          headers.set('content-type', `application/json`);
          return headers;
       },
@@ -16,7 +17,6 @@ const baseQuery = (baseUrl) =>
 
 const baseQueryMiddleware = (baseUrl) => async (args, api, extraOptions) => {
    let result = await baseQuery(baseUrl)(args, api, extraOptions);
-   //console.log("🚀 ~ file: baseQueryMiddleware.js:19 ~ baseQueryMiddleware ~ result:", result)
    let error = '';
    let errorAuth = '';
 
@@ -26,6 +26,11 @@ const baseQueryMiddleware = (baseUrl) => async (args, api, extraOptions) => {
       error = result?.error?.data?.message;
    } else {
       error = result?.error?.data?.status;
+   }
+
+   if (result?.data?.code === 100005) {
+      error = result?.data?.error?.message;
+      api.dispatch(handleLogout(true));
    }
 
    if (result?.error?.status === 401 && result?.error?.data?.error?.name !== 'TokenExpiredError') {
@@ -41,7 +46,11 @@ const baseQueryMiddleware = (baseUrl) => async (args, api, extraOptions) => {
       //console.log("🚀 ~ file: baseQueryMiddleware.js:27 ~ baseQueryMiddleware ~ refreshResult:", refreshResult)
 
       if (refreshResult?.data?.success) {
-         api.dispatch(refreshAccessTokenSlice(refreshResult.data.data.accessToken));
+         const payload = {
+            accessToken: refreshResult.data.data.accessToken,
+            accessTokenExpire: refreshResult.data.data.accessTokenExpire
+         }
+         api.dispatch(refreshAccessTokenSlice(payload));
          result = await baseQuery(baseUrl)(args, api, extraOptions); // retry the original query with new access token
       } else {
          error = refreshResult.error.data.message.code ?? refreshResult.error.data.message;

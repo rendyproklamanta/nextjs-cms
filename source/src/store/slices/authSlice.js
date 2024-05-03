@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
-import { clearCookie } from '@/src/utils/cookies';
+import { clearCookie, setCookie } from '@/src/utils/cookies';
 
 // const initialUsers = () => {
 //    if (typeof window !== "undefined") {
@@ -31,7 +31,7 @@ import { clearCookie } from '@/src/utils/cookies';
 const initialAccessToken = () => {
    if (typeof window !== 'undefined') {
       const item = window?.localStorage.getItem('accessToken');
-      return item !== 'undefined' ? JSON.parse(item) : false;
+      return item !== 'undefined' ? item : false;
    }
    return false;
 };
@@ -98,18 +98,32 @@ export const authSlice = createSlice({
       },
 
       loginSlice: (state, action) => {
+         // state.accessToken = action.payload.accessToken;
          state.accessToken = action.payload.accessToken;
-         // save in local storage
-         if (typeof window !== 'undefined') {
-            window?.localStorage.setItem('accessToken', JSON.stringify(state.accessToken));
-         }
+         state.tokenExpireTime = action.payload.tokenExpireTime;
+         // // save in local storage
+         // if (typeof window !== 'undefined') {
+         //    window?.localStorage.setItem('accessToken', state.accessToken);
+         // }
+         // setCookie(
+         //    'accessToken',
+         //    state.accessToken,
+         //    state.tokenExpireTime,
+         // );
+         window.location.reload();
       },
       refreshAccessTokenSlice: (state, action) => {
-         state.accessToken = action.payload;
+         state.accessToken = action.payload.accessToken;
+         state.accessTokenExpire = action.payload.accessTokenExpire;
          // save in local storage
-         if (typeof window !== 'undefined') {
-            window?.localStorage.setItem('accessToken', JSON.stringify(state.accessToken));
-         }
+         // if (typeof window !== 'undefined') {
+         //    window?.localStorage.setItem('accessToken', state.accessToken);
+         // }
+         setCookie(
+            'accessToken',
+            state.accessToken,
+            state.accessTokenExpire,
+         );
       },
       handleLogout: () => {
          clearCookie();

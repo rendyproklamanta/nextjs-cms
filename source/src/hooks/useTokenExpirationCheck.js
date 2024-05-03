@@ -9,7 +9,7 @@ const useTokenExpirationCheck = () => {
    useEffect(() => {
       const fetchData = async () => {
          try {
-            const get = await getCookie('isLoggedIn');
+            const get = await getCookie('accessToken');
             const data = get?.value;
             if (!data) {
                router.push('/login');

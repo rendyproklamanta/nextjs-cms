@@ -6,7 +6,7 @@ import LoginForm from '@/src/components/auth/form/login';
 import Social from '@/src/components/auth/social';
 import useDarkMode from '@/src/hooks/useDarkMode';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { getCookie } from '@/src/utils/cookies';
@@ -64,12 +64,11 @@ const LayoutLogin = () => {
 const LoginPage = ({ children }) => {
    const [isLoggedIn, setIsLoggedIn] = useState(false);
    const [isLoading, setIsLoading] = useState(true);
-   const router = useRouter();
 
    useEffect(() => {
       const fetchData = async () => {
          try {
-            const get = await getCookie('isLoggedIn');
+            const get = await getCookie('accessToken');
             const data = get?.value;
             if (data) {
                setIsLoggedIn(true);
@@ -85,9 +84,9 @@ const LoginPage = ({ children }) => {
 
    useEffect(() => {
       if (!isLoading && isLoggedIn) {
-         router.push('/dashboard');
+         redirect('/dashboard');
       }
-   }, [isLoggedIn, isLoading, router]);
+   }, [isLoggedIn, isLoading]);
 
    if (isLoading) {
       return <Loading />;

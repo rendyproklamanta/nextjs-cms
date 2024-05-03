@@ -1,18 +1,18 @@
-import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useGetUserInfoQuery } from '../store/api/authApi';
 
 const useUserInfo = () => {
    const [user, setUser] = useState('');
-   const [isLoading, setIsLoading] = useState(true);
-   const { userinfo } = useSelector((state) => state.auth);
+   const { isLoading, data: res } = useGetUserInfoQuery();
 
    useEffect(() => {
-      setUser(userinfo);
-      setIsLoading(false);
-   }, [userinfo]);
+      if (!isLoading) {
+         setUser(res);
+      }
+   }, [isLoading, res]);
 
-   return [user, isLoading];
+   return [isLoading, user];
 };
 
 export default useUserInfo;

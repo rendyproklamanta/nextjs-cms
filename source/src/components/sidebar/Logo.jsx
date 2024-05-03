@@ -7,6 +7,7 @@ import useSidebar from '@/src/hooks/useSidebar';
 import useSemiDark from '@/src/hooks/useSemiDark';
 import useSkin from '@/src/hooks/useSkin';
 import Image from 'next/image';
+import Logo from '../header/Tools/Logo';
 
 const SidebarLogo = ({ menuHover }) => {
    const [isDark] = useDarkMode();
@@ -27,29 +28,11 @@ const SidebarLogo = ({ menuHover }) => {
       
       `}
       >
-         <Link href="dashboard">
-            <div className="flex items-center space-x-4">
-               <div className="logo-icon animate-pulse">
-                  {!isDark && !isSemiDark ? (
-                     <Image
-                        src="/assets/images/logo/logo.png"
-                        alt=""
-                        width={100}
-                        height={0}
-                        priority={true}
-                     />
-                  ) : (
-                     <Image
-                        src="/assets/images/logo/logo.png"
-                        alt=""
-                        width={100}
-                        height={0}
-                        priority={true}
-                     />
-                  )}
-               </div>
+         <div className="flex items-center space-x-4">
+            <div className="logo-icon animate-pulse">
+               <Logo />
             </div>
-         </Link>
+         </div>
 
          {(!collapsed || menuHover) && (
             <div

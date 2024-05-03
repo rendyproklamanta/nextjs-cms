@@ -12,14 +12,15 @@ const Logo = () => {
 
    return (
       <div>
-         <Link href="/analytics">
+         <Link href="/dashboard">
             <>
+               {/* Desktop */}
                {width >= breakpoints.xl ? (
                   <Image
                      src={
                         isDark
-                           ? '/assets/images/logo/logo-white.svg'
-                           : '/assets/images/logo/logo.svg'
+                           ? '/assets/images/logo/logo.png'
+                           : '/assets/images/logo/logo.png'
                      }
                      width={100}
                      height={0}
@@ -30,10 +31,10 @@ const Logo = () => {
                   <Image
                      src={
                         isDark
-                           ? '/assets/images/logo/logo-c-white.svg'
-                           : '/assets/images/logo/logo-c.svg'
+                           ? '/assets/images/logo/logo.png'
+                           : '/assets/images/logo/logo.png'
                      }
-                     width={100}
+                     width={80}
                      height={0}
                      alt=""
                   />

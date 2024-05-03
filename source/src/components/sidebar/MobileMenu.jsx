@@ -3,13 +3,10 @@ import React, { useRef, useEffect, useState } from 'react';
 import Navmenu from './Navmenu';
 import menuItems from '@/src/constant/menuItems';
 import SimpleBar from 'simplebar-react';
-import useSemiDark from '@/src/hooks/useSemiDark';
 import useSkin from '@/src/hooks/useSkin';
-import useDarkMode from '@/src/hooks/useDarkMode';
-import Link from 'next/link';
 import useMobileMenu from '@/src/hooks/useMobileMenu';
 import Icon from '@/src/components/ui/Icon';
-import Image from 'next/image';
+import Logo from '../header/Tools/Logo';
 
 const MobileMenu = ({ className = 'custom-class' }) => {
    const scrollableNodeRef = useRef();
@@ -25,38 +22,20 @@ const MobileMenu = ({ className = 'custom-class' }) => {
       scrollableNodeRef.current.addEventListener('scroll', handleScroll);
    }, [scrollableNodeRef]);
 
-   const [isSemiDark] = useSemiDark();
    // skin
    // eslint-disable-next-line no-unused-vars
    const [skin] = useSkin();
-   const [isDark] = useDarkMode();
    const [mobileMenu, setMobileMenu] = useMobileMenu();
    return (
       <div
          className={`${className} fixed  top-0 h-full w-[248px] bg-white  shadow-lg   dark:bg-slate-800`}
       >
          <div className="logo-segment z-[9] flex h-[85px] items-center justify-between bg-white px-4  dark:bg-slate-800 ">
-            <Link href="/">
-               <div className="flex items-center space-x-4">
-                  <div className="logo-icon">
-                     <Image
-                        src={
-                           !isDark && !isSemiDark
-                              ? '/assets/images/logo/logo-c.svg'
-                              : '/assets/images/logo/logo-c-white.svg'
-                        }
-                        width={400}
-                        height={0}
-                        alt=""
-                     />
-                  </div>
-                  <div>
-                     <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
-                        DashCode
-                     </h1>
-                  </div>
+            <div className="flex items-center space-x-4">
+               <div className="logo-icon">
+                  <Logo />
                </div>
-            </Link>
+            </div>
             <button
                type="button"
                onClick={() => setMobileMenu(!mobileMenu)}

@@ -23,7 +23,7 @@ import Header from '@/src/components/header';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
-import { getCookie } from '@/src/utils/cookies';
+import { hasCookie } from '@/src/utils/cookies';
 import useTokenExpirationCheck from '@/src/hooks/useTokenExpirationCheck';
 
 const LayoutDashboard = ({ children }) => {
@@ -162,7 +162,6 @@ const LayoutDashboard = ({ children }) => {
 
 export default function RootLayout({ children }) {
    const [isLoggedIn, setIsLoggedIn] = useState(false);
-   const [isLoading, setIsLoading] = useState(true);
    const router = useRouter();
 
    // middleware check token, if not do login
@@ -171,14 +170,13 @@ export default function RootLayout({ children }) {
    useEffect(() => {
       const fetchData = async () => {
          try {
-            const get = await getCookie('accessToken');
-            const data = get?.value;
-            if (data) {
+            const getAccessToken = await hasCookie('accessToken');
+            const getRefreshToken = await hasCookie('refreshToken');
+            if (getAccessToken && getRefreshToken) {
                setIsLoggedIn(true);
             } else {
                router.push('/login');
             }
-            setIsLoading(false);
          } catch (error) {
             console.error('Error fetching data:', error);
          }
@@ -188,10 +186,7 @@ export default function RootLayout({ children }) {
    }, [router]);
 
 
-   if (isLoading && !isLoggedIn) {
-      return <Loading />;
-   } else {
+   if (isLoggedIn) {
       return (<LayoutDashboard>{children}</LayoutDashboard>);
-   }
-
+   } 
 }

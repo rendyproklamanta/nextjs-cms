@@ -15,7 +15,13 @@ export const setCookie = async (name, value, maxAge) => {
 
 export const getCookie = (name) => {
    const res = cookies().get(name);
+   return res?.value;
+};
+
+export const hasCookie = (name) => {
+   const res = cookies().has(name);
    return res;
+
 };
 
 export const clearCookie = () => {

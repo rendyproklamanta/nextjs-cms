@@ -5,7 +5,7 @@ const Loading = () => {
    const [isDark] = useDarkMode(); // eslint-disable-line no-unused-vars
 
    return (
-      <div className="app_height flex flex-col items-center justify-center">
+      <div className="h-screen flex flex-col items-center justify-center">
          <svg
             className="h-10 w-10 animate-spin ltr:-ml-1 ltr:mr-3 rtl:-mr-1 rtl:ml-3
          "

@@ -9,7 +9,7 @@ const baseQuery = (baseUrl) =>
       credentials: 'include',
       prepareHeaders: async (headers) => {
          const cookie = await getCookie('accessToken');
-         headers.set('Authorization', `Bearer ${cookie?.value}`);
+         headers.set('Authorization', `Bearer ${cookie}`);
          headers.set('content-type', `application/json`);
          return headers;
       },

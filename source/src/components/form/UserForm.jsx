@@ -65,9 +65,6 @@ const UserForm = ({ params }) => {
                   router.push(`/${page}/list`);
                   refetch();
                }
-            })
-            .catch((error) => {
-               Swal.fire('Failed!', error?.data?.message, 'error');
             });
       } else {
          createUser(formData)
@@ -81,9 +78,6 @@ const UserForm = ({ params }) => {
                   );
                   router.push(`/${page}/list`);
                }
-            })
-            .catch((error) => {
-               Swal.fire('Failed!', error?.data?.message, 'error');
             });
       }
    };

@@ -9,7 +9,7 @@ import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { getCookie } from '@/src/utils/cookies';
+import { hasCookie } from '@/src/utils/cookies';
 import Loading from '@/src/components/Loading';
 
 // image import
@@ -68,9 +68,9 @@ const LoginPage = ({ children }) => {
    useEffect(() => {
       const fetchData = async () => {
          try {
-            const get = await getCookie('accessToken');
-            const data = get?.value;
-            if (data) {
+            const getAccessToken = await hasCookie('accessToken');
+            const getRefreshToken = await hasCookie('refreshToken');
+            if (getAccessToken && getRefreshToken) {
                setIsLoggedIn(true);
             }
          } catch (error) {

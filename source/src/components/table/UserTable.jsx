@@ -10,6 +10,7 @@ import {
 } from '@/src/store/api/userApi';
 import { useEffect, useState } from 'react';
 import MuiTable from '../ui/MuiTable';
+import useDarkmode from '@/src/hooks/useDarkMode';
 
 const csvConfig = mkConfig({
    fieldSeparator: ',',
@@ -24,6 +25,7 @@ const UserTable = () => {
    });
    const page = pagination.pageIndex;
    const pageSize = pagination.pageSize;
+   const [isDark] = useDarkmode();
 
    // STATE
    const [columnFilters, setColumnFilters] = useState([]);
@@ -104,7 +106,7 @@ const UserTable = () => {
       columnHelper.accessor('id', {
          header: 'ID',
          size: 100,
-         footer: 'Total Data', //simple string header
+         footer: 'Total Row',
       }),
       columnHelper.accessor('firstName', {
          header: 'First Name',
@@ -144,6 +146,7 @@ const UserTable = () => {
          csvConfig={csvConfig}
          columnFilters={columnFilters}
          setColumnFilters={setColumnFilters}
+         isDark={isDark}
       />
    );
 };

@@ -19,7 +19,7 @@ const Logo = () => {
                   <Image
                      src={
                         isDark
-                           ? '/assets/images/logo/logo.png'
+                           ? '/assets/images/logo/logo-dark.png'
                            : '/assets/images/logo/logo.png'
                      }
                      width={100}
@@ -31,7 +31,7 @@ const Logo = () => {
                   <Image
                      src={
                         isDark
-                           ? '/assets/images/logo/logo.png'
+                           ? '/assets/images/logo/logo-dark.png'
                            : '/assets/images/logo/logo.png'
                      }
                      width={80}

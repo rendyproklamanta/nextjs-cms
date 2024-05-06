@@ -1,19 +1,10 @@
 import React from 'react';
-import Link from 'next/link';
-// eslint-disable-next-line no-unused-vars
-import Icon from '@/src/components/ui/Icon';
-import useDarkMode from '@/src/hooks/useDarkMode';
 import useSidebar from '@/src/hooks/useSidebar';
-import useSemiDark from '@/src/hooks/useSemiDark';
 import useSkin from '@/src/hooks/useSkin';
-import Image from 'next/image';
 import Logo from '../header/Tools/Logo';
 
 const SidebarLogo = ({ menuHover }) => {
-   const [isDark] = useDarkMode();
    const [collapsed, setMenuCollapsed] = useSidebar();
-   // semi dark
-   const [isSemiDark] = useSemiDark();
    // skin
    const [skin] = useSkin();
    return (

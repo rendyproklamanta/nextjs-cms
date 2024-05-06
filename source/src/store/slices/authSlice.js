@@ -1,54 +1,33 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
-import { clearCookie, setCookie } from '@/src/utils/cookies';
+import { clearCookie } from '@/src/utils/cookies';
 
-// const initialUsers = () => {
-//    if (typeof window !== "undefined") {
-//       const item = window?.localStorage.getItem("users");
-//       return item
-//          ? JSON.parse(item)
-//          : [
-//             {
-//                id: uuidv4(),
-//                name: "dashcode",
-//                email: "dashcode@gmail.com",
-//                password: "dashcode",
-//             },
-//          ];
-//    }
-//    return [
-//       {
-//          id: uuidv4(),
-//          name: "dashcode",
-//          email: "dashcode@gmail.com",
-//          password: "dashcode",
-//       },
-//    ];
-// };
-// // save users in local storage
-
-const initialAccessToken = () => {
-   if (typeof window !== 'undefined') {
-      const item = window?.localStorage.getItem('accessToken');
-      return item !== 'undefined' ? item : false;
-   }
+const initialAccessToken = async () => {
+   // if (typeof window !== 'undefined') {
+   //    const item = window?.localStorage.getItem('accessToken');
+   //    return item !== 'undefined' ? item : false;
+   // }
+   // return false;
+   // const accessToken = await getCookie('accessToken');
    return false;
 };
 
-const initialRefreshToken = () => {
-   if (typeof window !== 'undefined') {
-      const item = window?.localStorage.getItem('refreshToken');
-      return item !== 'undefined' ? JSON.parse(item) : false;
-   }
+const initialRefreshToken = async () => {
+   // if (typeof window !== 'undefined') {
+   //    const item = window?.localStorage.getItem('refreshToken');
+   //    return item !== 'undefined' ? JSON.parse(item) : false;
+   // }
+   //return false;
+   // const refreshToken = await getCookie('refreshToken');
    return false;
 };
 
 const initialUser = () => {
-   if (typeof window !== 'undefined') {
-      const item = window?.localStorage.getItem('userinfo');
-      return item !== 'undefined' ? JSON.parse(item) : false;
-   }
+   // if (typeof window !== 'undefined') {
+   //    const item = window?.localStorage.getItem('userinfo');
+   //    return item !== 'undefined' ? JSON.parse(item) : false;
+   // }
    return false;
 };
 
@@ -97,33 +76,38 @@ export const authSlice = createSlice({
          }
       },
 
+      // eslint-disable-next-line no-unused-vars
       loginSlice: (state, action) => {
          // state.accessToken = action.payload.accessToken;
-         state.accessToken = action.payload.accessToken;
-         state.tokenExpireTime = action.payload.tokenExpireTime;
+         // state.accessToken = action.payload.accessToken;
+         // state.accessTokenExpiry = action.payload.accessTokenExpiry;
          // // save in local storage
          // if (typeof window !== 'undefined') {
          //    window?.localStorage.setItem('accessToken', state.accessToken);
          // }
+
          // setCookie(
          //    'accessToken',
          //    state.accessToken,
-         //    state.tokenExpireTime,
+         //    state.accessTokenExpiry,
          // );
          window.location.reload();
       },
+      // eslint-disable-next-line no-unused-vars
       refreshAccessTokenSlice: (state, action) => {
-         state.accessToken = action.payload.accessToken;
-         state.accessTokenExpire = action.payload.accessTokenExpire;
+         // state.accessToken = action.payload.accessToken;
+         // state.accessTokenExpiry = action.payload.accessTokenExpiry;
+
          // save in local storage
          // if (typeof window !== 'undefined') {
          //    window?.localStorage.setItem('accessToken', state.accessToken);
          // }
-         setCookie(
-            'accessToken',
-            state.accessToken,
-            state.accessTokenExpire,
-         );
+
+         // setCookie(
+         //    'accessToken',
+         //    state.accessToken,
+         //    state.accessTokenExpiry,
+         // );
       },
       handleLogout: () => {
          clearCookie();

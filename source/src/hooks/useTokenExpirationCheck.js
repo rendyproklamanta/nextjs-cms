@@ -9,10 +9,8 @@ const useTokenExpirationCheck = () => {
    useEffect(() => {
       const fetchData = async () => {
          try {
-            const getAccessToken = await hasCookie('accessToken');
-            const getRefreshToken = await hasCookie('refreshToken');
-            console.log("🚀 ~ fetchData ~ getRefreshToken:", getRefreshToken)
-            if (!getAccessToken || !getRefreshToken) {
+            const refreshToken = await hasCookie('refreshToken');
+            if (!refreshToken) {
                router.push('/login');
             }
          } catch (error) {

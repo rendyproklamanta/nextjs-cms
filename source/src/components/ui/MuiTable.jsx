@@ -2,7 +2,10 @@ import React from 'react';
 import { Box, Button, MenuItem } from '@mui/material';
 
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import { MaterialReactTable, useMaterialReactTable } from 'material-react-table';
+import {
+   MaterialReactTable,
+   useMaterialReactTable,
+} from 'material-react-table';
 import { download, generateCsv } from 'export-to-csv';
 
 const MuiTable = ({
@@ -16,6 +19,7 @@ const MuiTable = ({
    csvConfig,
    columnFilters,
    setColumnFilters,
+   isDark,
 }) => {
    const handleExportRows = (rows) => {
       const rowData = rows.map((row) => row.original);
@@ -38,6 +42,20 @@ const MuiTable = ({
          isLoading: isFetching, //cell skeletons and loading overlay
          pagination,
          columnFilters,
+      },
+      muiTablePaperProps: {
+         //customize paper styles
+         sx: {
+            borderRadius: '15px',
+         },
+      },
+      muiTableBodyProps: {
+         sx: {
+            //stripe the rows, make odd rows a darker color
+            '& tr:nth-of-type(odd) > td': {
+               backgroundColor: !isDark && '#f5f5f5',
+            },
+         },
       },
       renderRowActionMenuItems: ({ row }) => [
          <MenuItem key="edit" onClick={() => console.info(row.original.id)}>
@@ -83,8 +101,13 @@ const MuiTable = ({
             </Button>
             <Button
                style={{ textTransform: 'none' }}
-               disabled={!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()}
-               onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
+               disabled={
+                  !table.getIsSomeRowsSelected() &&
+                  !table.getIsAllRowsSelected()
+               }
+               onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+               }
                startIcon={<FileDownloadIcon />}
             >
                Export Selected Rows

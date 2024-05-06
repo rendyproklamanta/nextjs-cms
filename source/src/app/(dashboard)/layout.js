@@ -170,9 +170,8 @@ export default function RootLayout({ children }) {
    useEffect(() => {
       const fetchData = async () => {
          try {
-            const getAccessToken = await hasCookie('accessToken');
-            const getRefreshToken = await hasCookie('refreshToken');
-            if (getAccessToken && getRefreshToken) {
+            const refreshToken = await hasCookie('refreshToken');
+            if (refreshToken) {
                setIsLoggedIn(true);
             } else {
                router.push('/login');
@@ -188,5 +187,5 @@ export default function RootLayout({ children }) {
 
    if (isLoggedIn) {
       return (<LayoutDashboard>{children}</LayoutDashboard>);
-   } 
+   }
 }

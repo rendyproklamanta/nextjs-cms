@@ -14,7 +14,7 @@ export const authApi = createApi({
          }),
       }),
       getUserInfo: builder.query({
-         query: () => `/token/data`,
+         query: () => `/info`,
          keepUnusedDataFor: 0, // set cache | in second | 0 = no-cache
       }),
    }),

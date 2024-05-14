@@ -42,6 +42,7 @@ const baseQueryMiddleware = (baseUrl) => async (args, api, extraOptions) => {
          extraOptions,
       );
 
+      console.log("🚀 ~ baseQueryMiddleware ~ refreshResult:", refreshResult)
 
       if (refreshResult?.data?.success) {
          const payload = {
@@ -51,7 +52,7 @@ const baseQueryMiddleware = (baseUrl) => async (args, api, extraOptions) => {
          api.dispatch(refreshAccessTokenSlice(payload));
          result = await baseQuery(baseUrl)(args, api, extraOptions); // retry the original query with new access token
       } else {
-         error = refreshResult.error.data.message.code ?? refreshResult.error.data.message;
+         error = refreshResult?.error?.data?.message?.code ?? refreshResult?.error?.data?.message;
          errorAuth = true;
       }
    }

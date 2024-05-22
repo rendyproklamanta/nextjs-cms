@@ -1,5 +1,5 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
-import { handleLogout, refreshAccessTokenSlice } from './slices/authSlice';
+import { handleLogout } from './slices/authSlice';
 import { toast } from 'react-toastify';
 import { getCookie, hasCookie, setCookie } from '../utils/cookies';
 import { nextDecrypt, nextEncrypt } from '../utils/encryption';

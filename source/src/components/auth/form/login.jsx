@@ -7,7 +7,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Checkbox from '@/src/components/ui/Checkbox';
 import { useDispatch } from 'react-redux';
-import { loginSlice } from '../../../store/slices/authSlice';
 import { usePostUserLoginMutation } from '@/src/store/api/authApi';
 import { useEffect } from 'react';
 import Swal from 'sweetalert2';
@@ -27,6 +26,7 @@ const LoginForm = () => {
    const [checkedRemember, setCheckedRemember] = useState(false);
    const [userLogin, { error: errorPostLogin, isLoading }] =
       usePostUserLoginMutation();
+   // eslint-disable-next-line no-unused-vars
    const dispatch = useDispatch();
    useEffect(() => {
       if (errorPostLogin) {
@@ -63,12 +63,18 @@ const LoginForm = () => {
             if (res?.success) {
                // const result = JSON.stringify(res.data);
                // dispatch(loginSlice(res?.data));
-               const encryptedToken = await nextEncrypt(res?.data?.accessToken);
-
+               const encryptedAccessToken = await nextEncrypt(
+                  res?.data?.accessToken,
+               );
                await setCookie(
                   'accessToken',
-                  encryptedToken,
+                  encryptedAccessToken,
                   res.data.accessTokenExpiry,
+               );
+               await setCookie(
+                  'refreshToken',
+                  res?.data?.refreshToken,
+                  res.data.refreshTokenExpiry,
                );
             } else {
                Swal.fire('Failed!', res?.message, 'error');

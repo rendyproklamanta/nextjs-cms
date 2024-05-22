@@ -131,14 +131,15 @@ const UserForm = ({ params }) => {
                />
             </div>
             <div className="col-span-1 flex justify-between pt-3 text-center lg:col-span-2">
-               <span
-                  className="btn btn-secondary w-[150px] cursor-pointer rounded-lg"
+               <button
+                  type="button"
+                  className="btn-secondary h-10 cursor-pointer rounded-lg px-4 text-sm"
                   onClick={() => router.back()}
                >
                   {'< Kembali'}
-               </span>
+               </button>
                {isLoadingCreateUser || isLoadingUpdateUser ? (
-                  <div className="btn btn-dark block w-[150px] text-center">
+                  <div className="btn-dark block h-10 text-center text-sm">
                      <div
                         className="inline-block h-5 w-5 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
                         role="status"
@@ -147,7 +148,7 @@ const UserForm = ({ params }) => {
                ) : (
                   <button
                      type="submit"
-                     className="btn btn-dark w-[150px] rounded-lg"
+                     className="btn-dark h-10 rounded-lg px-4 text-sm"
                   >
                      Simpan Data
                   </button>

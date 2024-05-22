@@ -10,11 +10,16 @@ import Logo from './Tools/Logo';
 // import SearchModal from './Tools/SearchModal';
 import Profile from './Tools/Profile';
 import useMobileMenu from '@/src/hooks/useMobileMenu';
+import { useGetUserInfoQuery } from '@/src/store/api/authApi';
+import { WEBSITE_NAME } from '@/src/constant/setting';
 
 const Header = ({ className = 'custom-class' }) => {
    const [collapsed, setMenuCollapsed] = useSidebar();
    const { width, breakpoints } = useWidth();
    const [navbarType] = useNavbarType();
+
+   const { isLoading, data: res } = useGetUserInfoQuery();
+
    const navbarTypeClass = () => {
       switch (navbarType) {
          case 'floating':
@@ -30,6 +35,7 @@ const Header = ({ className = 'custom-class' }) => {
       }
    };
    const [menuType] = useMenulayout();
+
    const [skin] = useSkin();
 
    const [mobileMenu, setMobileMenu] = useMobileMenu();
@@ -59,7 +65,7 @@ const Header = ({ className = 'custom-class' }) => {
                {/* For Vertical  */}
 
                {menuType === 'vertical' && (
-                  <div className="flex items-center space-x-2 md:space-x-4 rtl:space-x-reverse">
+                  <div className="flex w-full items-center space-x-2 md:space-x-4 rtl:space-x-reverse">
                      {collapsed && width >= breakpoints.xl && (
                         <button
                            className="text-xl text-slate-900 dark:text-white"
@@ -77,6 +83,13 @@ const Header = ({ className = 'custom-class' }) => {
                         </div>
                      )}
                      {/* <SearchModal /> */}
+
+                     <marquee direction="left">
+                        ____________👋👋👋👋👋 Hi{' '}
+                        {!isLoading && res?.data?.name},{' '}
+                        <span data-key="t-welcome-to">Welcome to </span>{' '}
+                        {WEBSITE_NAME}👋👋👋👋____________
+                     </marquee>
                   </div>
                )}
                {/* For Horizontal  */}

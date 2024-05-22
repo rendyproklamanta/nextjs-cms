@@ -1,5 +1,6 @@
 'use client';
 
+// eslint-disable-next-line no-unused-vars
 import { Suspense, useEffect, } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { ToastContainer } from 'react-toastify';
@@ -14,7 +15,6 @@ import useMobileMenu from '@/src/hooks/useMobileMenu';
 import useRtl from '@/src/hooks/useRtl';
 import useDarkMode from '@/src/hooks/useDarkMode';
 import useSkin from '@/src/hooks/useSkin';
-import Loading from '@/src/components/Loading';
 import useNavbarType from '@/src/hooks/useNavbarType';
 import { motion } from 'framer-motion';
 import MobileFooter from '@/src/components/footer/MobileFooter';
@@ -170,7 +170,7 @@ export default function RootLayout({ children }) {
       if (!isLoading && !hasRefreshToken) {
          router.push('/login');
       }
-   }, [isLoading, hasRefreshToken]);
+   }, [isLoading, hasRefreshToken, router]);
 
    if (!isLoading && hasRefreshToken) {
       return <LayoutDashboard>{children}</LayoutDashboard>;

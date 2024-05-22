@@ -8,7 +8,6 @@ import useDarkMode from '@/src/hooks/useDarkMode';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Loading from '@/src/components/Loading';
 import useCheckTokenExpiration from '@/src/hooks/useCheckTokenExpiration';
 import { useEffect } from 'react';
 
@@ -69,7 +68,7 @@ const LoginPage = ({ children }) => {
       if (!isLoading && hasRefreshToken) {
          router.push('/dashboard');
       }
-   }, [isLoading, hasRefreshToken]);
+   }, [isLoading, hasRefreshToken, router]);
 
    if (!isLoading && !hasRefreshToken) {
       return <LayoutLogin>{children}</LayoutLogin>;

@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
-import { clearCookie } from '@/src/utils/cookies';
+import { clearCookie, setCookie } from '@/src/utils/cookies';
+import { nextEncrypt } from '@/src/utils/encryption';
 
 const initialAccessToken = async () => {
    // if (typeof window !== 'undefined') {
@@ -77,25 +78,27 @@ export const authSlice = createSlice({
       },
 
       // eslint-disable-next-line no-unused-vars
-      loginSlice: (state, action) => {
-         // state.accessToken = action.payload.accessToken;
-         // state.accessToken = action.payload.accessToken;
-         // state.accessTokenExpiry = action.payload.accessTokenExpiry;
+      loginSlice: async (state, action) => {
+         state.accessToken = action.payload.accessToken;
+         state.accessTokenExpiry = action.payload.accessTokenExpiry;
          // // save in local storage
          // if (typeof window !== 'undefined') {
          //    window?.localStorage.setItem('accessToken', state.accessToken);
          // }
 
-         // setCookie(
+         // const encryptedToken = await nextEncrypt(state.accessToken);
+
+         // await setCookie(
          //    'accessToken',
-         //    state.accessToken,
+         //    encryptedToken,
          //    state.accessTokenExpiry,
          // );
-         window.location.reload();
+
+         //window.location.reload();
       },
       // eslint-disable-next-line no-unused-vars
       refreshAccessTokenSlice: (state, action) => {
-         // state.accessToken = action.payload.accessToken;
+         state.accessToken = action.payload.accessToken;
          // state.accessTokenExpiry = action.payload.accessTokenExpiry;
 
          // save in local storage
@@ -103,11 +106,11 @@ export const authSlice = createSlice({
          //    window?.localStorage.setItem('accessToken', state.accessToken);
          // }
 
-         // setCookie(
-         //    'accessToken',
-         //    state.accessToken,
-         //    state.accessTokenExpiry,
-         // );
+         setCookie(
+            'accessToken',
+            nextEncrypt(state.accessToken),
+            state.accessTokenExpiry,
+         );
       },
       handleLogout: () => {
          clearCookie();

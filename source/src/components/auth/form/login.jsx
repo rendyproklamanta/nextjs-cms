@@ -11,6 +11,8 @@ import { loginSlice } from '../../../store/slices/authSlice';
 import { usePostUserLoginMutation } from '@/src/store/api/authApi';
 import { useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { nextEncrypt } from '@/src/utils/encryption';
+import { setCookie } from '@/src/utils/cookies';
 // import Select from '../../ui/Select';
 
 const schema = yup
@@ -57,10 +59,17 @@ const LoginForm = () => {
 
       userLogin(formData)
          .unwrap()
-         .then((res) => {
+         .then(async (res) => {
             if (res?.success) {
                // const result = JSON.stringify(res.data);
-               dispatch(loginSlice(res.data));
+               // dispatch(loginSlice(res?.data));
+               const encryptedToken = await nextEncrypt(res?.data?.accessToken);
+
+               await setCookie(
+                  'accessToken',
+                  encryptedToken,
+                  res.data.accessTokenExpiry,
+               );
             } else {
                Swal.fire('Failed!', res?.message, 'error');
             }

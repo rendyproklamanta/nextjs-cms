@@ -6,11 +6,11 @@ import LoginForm from '@/src/components/auth/form/login';
 import Social from '@/src/components/auth/social';
 import useDarkMode from '@/src/hooks/useDarkMode';
 import Image from 'next/image';
-import { redirect } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { hasCookie } from '@/src/utils/cookies';
 import Loading from '@/src/components/Loading';
+import useCheckTokenExpiration from '@/src/hooks/useCheckTokenExpiration';
+import { useEffect } from 'react';
 
 // image import
 const LayoutLogin = () => {
@@ -62,35 +62,17 @@ const LayoutLogin = () => {
 };
 
 const LoginPage = ({ children }) => {
-   const [isLoggedIn, setIsLoggedIn] = useState(false);
-   const [isLoading, setIsLoading] = useState(true);
+   const [isLoading, hasRefreshToken] = useCheckTokenExpiration(); // middleware check refreshToken
+   const router = useRouter();
 
    useEffect(() => {
-      const fetchData = async () => {
-         try {
-            const refreshToken = await hasCookie('refreshToken');
-            if (refreshToken) {
-               setIsLoggedIn(true);
-            }
-         } catch (error) {
-            console.error('Error fetching data:', error);
-         }
-         setIsLoading(false);
-      };
-
-      fetchData();
-   }, []);
-
-   useEffect(() => {
-      if (!isLoading && isLoggedIn) {
-         redirect('/dashboard');
+      if (!isLoading && hasRefreshToken) {
+         router.push('/dashboard');
       }
-   }, [isLoggedIn, isLoading]);
+   }, [isLoading, hasRefreshToken]);
 
-   if (isLoading) {
-      return <Loading />;
-   } else {
-      return <>{!isLoggedIn && <LayoutLogin>{children}</LayoutLogin>}</>;
+   if (!isLoading && !hasRefreshToken) {
+      return <LayoutLogin>{children}</LayoutLogin>;
    }
 };
 

@@ -1,8 +1,7 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { Suspense, useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { Suspense, useEffect, } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { ToastContainer } from 'react-toastify';
 import Sidebar from '@/src/components/sidebar';
 import useWidth from '@/src/hooks/useWidth';
@@ -23,8 +22,8 @@ import Header from '@/src/components/header';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
-import { hasCookie } from '@/src/utils/cookies';
-import useTokenExpirationCheck from '@/src/hooks/useTokenExpirationCheck';
+import useCheckTokenExpiration from '@/src/hooks/useCheckTokenExpiration';
+import { common } from '@mui/material/colors';
 
 const LayoutDashboard = ({ children }) => {
    const { width, breakpoints } = useWidth();
@@ -57,6 +56,9 @@ const LayoutDashboard = ({ children }) => {
    const theme = createTheme({
       palette: {
          mode: isDark ? 'dark' : 'light',
+         background: {
+            default: isDark ? '#1e293b' : common.white,
+         },
       },
       components: {
          MuiTooltip: {
@@ -144,7 +146,7 @@ const LayoutDashboard = ({ children }) => {
                               duration: 0.5,
                            }}
                         >
-                           <Suspense fallback={<Loading />}>{children}</Suspense>
+                           {children}
                         </motion.div>
                      </div>
                   </div>
@@ -161,31 +163,17 @@ const LayoutDashboard = ({ children }) => {
 };
 
 export default function RootLayout({ children }) {
-   const [isLoggedIn, setIsLoggedIn] = useState(false);
+   const [isLoading, hasRefreshToken] = useCheckTokenExpiration(); // middleware check refreshToken
    const router = useRouter();
 
-   // middleware check token, if not do login
-   useTokenExpirationCheck();
-
    useEffect(() => {
-      const fetchData = async () => {
-         try {
-            const refreshToken = await hasCookie('refreshToken');
-            if (refreshToken) {
-               setIsLoggedIn(true);
-            } else {
-               router.push('/login');
-            }
-         } catch (error) {
-            console.error('Error fetching data:', error);
-         }
-      };
+      if (!isLoading && !hasRefreshToken) {
+         router.push('/login');
+      }
+   }, [isLoading, hasRefreshToken]);
 
-      fetchData();
-   }, [router]);
-
-
-   if (isLoggedIn) {
-      return (<LayoutDashboard>{children}</LayoutDashboard>);
+   if (!isLoading && hasRefreshToken) {
+      return <LayoutDashboard>{children}</LayoutDashboard>;
    }
+
 }

@@ -53,7 +53,7 @@ const MuiTable = ({
          sx: {
             //stripe the rows, make odd rows a darker color
             '& tr:nth-of-type(odd) > td': {
-               backgroundColor: !isDark && '#f5f5f5',
+               backgroundColor: !isDark && '#f9f9f9',
             },
          },
       },

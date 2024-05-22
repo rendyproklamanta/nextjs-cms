@@ -1,7 +1,8 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 import { handleLogout, refreshAccessTokenSlice } from './slices/authSlice';
 import { toast } from 'react-toastify';
-import { getCookie, hasCookie } from '../utils/cookies';
+import { getCookie, hasCookie, setCookie } from '../utils/cookies';
+import { nextDecrypt, nextEncrypt } from '../utils/encryption';
 
 const baseQuery = (baseUrl) =>
    fetchBaseQuery({
@@ -9,7 +10,12 @@ const baseQuery = (baseUrl) =>
       credentials: 'include',
       prepareHeaders: async (headers) => {
          const accessToken = await getCookie('accessToken');
-         headers.set('Authorization', `Bearer ${accessToken}`);
+         if (accessToken) {
+            const accessTokenDecrypt = await nextDecrypt(accessToken);
+
+            headers.set('Authorization', `Bearer ${accessTokenDecrypt}`);
+         }
+
          headers.set('content-type', `application/json`);
          return headers;
       },
@@ -20,7 +26,7 @@ const baseQueryMiddleware = (baseUrl) => async (args, api, extraOptions) => {
    let error = '';
    let errorAuth = '';
    const accessToken = await hasCookie('accessToken');
-   const refreshToken = await hasCookie('refreshToken');
+   const refreshToken = await getCookie('refreshToken');
 
    if (result?.error?.status === 'FETCH_ERROR') {
       error = result?.error?.status;
@@ -36,21 +42,31 @@ const baseQueryMiddleware = (baseUrl) => async (args, api, extraOptions) => {
       const refreshResult = await baseQuery(baseUrl)(
          {
             url: process.env.NEXT_PUBLIC_API_URL + 'auths/token/refresh',
-            method: 'GET',
+            method: 'POST',
+            body: {
+               refreshToken: refreshToken,
+            }
          },
          api,
          extraOptions,
       );
 
-      console.log("🚀 ~ baseQueryMiddleware ~ refreshResult:", refreshResult)
-
       if (refreshResult?.data?.success) {
-         const payload = {
-            accessToken: refreshResult?.data?.data?.accessToken,
-            accessTokenExpiry: refreshResult?.data?.data?.accessTokenExpiry
-         }
-         api.dispatch(refreshAccessTokenSlice(payload));
-         result = await baseQuery(baseUrl)(args, api, extraOptions); // retry the original query with new access token
+         // const payload = {
+         //    accessToken: refreshResult?.data?.data?.accessToken,
+         //    accessTokenExpiry: refreshResult?.data?.data?.accessTokenExpiry
+         // }
+         // api.dispatch(refreshAccessTokenSlice(payload));
+
+         const encryptedToken = await nextEncrypt(refreshResult?.data?.data?.accessToken);
+
+         await setCookie(
+            'accessToken',
+            encryptedToken,
+            refreshResult?.data?.data?.accessTokenExpiry,
+         );
+
+         result = await baseQuery(baseUrl)(args, api, extraOptions); // retry call API with new access token
       } else {
          error = refreshResult?.error?.data?.message?.code ?? refreshResult?.error?.data?.message;
          errorAuth = true;
@@ -72,7 +88,6 @@ const baseQueryMiddleware = (baseUrl) => async (args, api, extraOptions) => {
       if (errorAuth) {
          api.dispatch(handleLogout(true));
       }
-      return result;
    }
 
    return result;

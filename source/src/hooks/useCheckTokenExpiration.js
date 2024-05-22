@@ -1,28 +1,32 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { hasCookie } from '../utils/cookies';
 
-const useTokenExpirationCheck = () => {
+const useCheckTokenExpiration = () => {
    const pathname = usePathname();
    const router = useRouter();
+   const [hasRefreshToken, setHasRefreshToken] = useState(false);
+   const [isLoading, setIsLoading] = useState(true);
 
    useEffect(() => {
       const fetchData = async () => {
          try {
             const refreshToken = await hasCookie('refreshToken');
-            if (!refreshToken) {
-               router.push('/login');
+            if (refreshToken) {
+               setHasRefreshToken(true);
             }
          } catch (error) {
             console.error('Error fetching data:', error);
          }
+         setIsLoading(false);
       };
 
       fetchData();
 
    }, [pathname, router]);
 
-   return null;
+   return [isLoading, hasRefreshToken];
+
 };
 
-export default useTokenExpirationCheck;
+export default useCheckTokenExpiration;

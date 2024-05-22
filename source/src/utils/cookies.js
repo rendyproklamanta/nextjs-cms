@@ -10,7 +10,7 @@ export const setCookie = async (name, value, maxAge) => {
       path: '/',
       maxAge: maxAge,
    });
-
+   return name;
 };
 
 export const getCookie = (name) => {

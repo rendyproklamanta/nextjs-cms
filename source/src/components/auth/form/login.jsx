@@ -10,6 +10,9 @@ import { useDispatch } from 'react-redux';
 import { usePostUserLoginMutation } from '@/src/store/api/authApi';
 import { useEffect } from 'react';
 import Swal from 'sweetalert2';
+// import { nextEncrypt } from '@/src/utils/encryption';
+// import { setCookie } from '@/src/utils/cookies';
+import { loginSlice } from '@/src/store/slices/authSlice';
 import { nextEncrypt } from '@/src/utils/encryption';
 import { setCookie } from '@/src/utils/cookies';
 // import Select from '../../ui/Select';
@@ -62,19 +65,39 @@ const LoginForm = () => {
          .then(async (res) => {
             if (res?.success) {
                // const result = JSON.stringify(res.data);
-               // dispatch(loginSlice(res?.data));
-               const encryptedAccessToken = await nextEncrypt(
-                  res?.data?.accessToken,
+
+               const accessToken = res?.data.token.accessToken;
+               const userInfo = res?.data.userInfo;
+               const refreshToken = res?.data.token.refreshToken;
+               const refreshTokenExpiry = res?.data.token.refreshTokenExpiry;
+
+               const encryptedAccessToken = await nextEncrypt(accessToken);
+               const encryptedUserInfo = await nextEncrypt(
+                  JSON.stringify(userInfo),
                );
-               await setCookie(
-                  'accessToken',
-                  encryptedAccessToken,
-                  res.data.accessTokenExpiry,
-               );
+
+               const data = {
+                  ...res?.data,
+                  userInfoEncrypted: encryptedUserInfo,
+               };
+
+               dispatch(loginSlice(data));
+
+               // save in local storage
+               if (typeof window !== 'undefined') {
+                  // Save Token
+                  window?.localStorage.setItem(
+                     'accessToken',
+                     encryptedAccessToken,
+                  );
+                  // Save UserInfo
+                  window?.localStorage.setItem('userInfo', encryptedUserInfo);
+               }
+
                await setCookie(
                   'refreshToken',
-                  res?.data?.refreshToken,
-                  res.data.refreshTokenExpiry,
+                  refreshToken,
+                  refreshTokenExpiry,
                );
             } else {
                Swal.fire('Failed!', res?.message, 'error');

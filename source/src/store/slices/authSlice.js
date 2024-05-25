@@ -1,41 +1,37 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
-import { clearCookie, setCookie } from '@/src/utils/cookies';
-import { nextEncrypt } from '@/src/utils/encryption';
+import { clearCookie } from '@/src/utils/cookies';
 
 const initialAccessToken = async () => {
-   // if (typeof window !== 'undefined') {
-   //    const item = window?.localStorage.getItem('accessToken');
-   //    return item !== 'undefined' ? item : false;
-   // }
+   if (typeof window !== 'undefined') {
+      const item = window?.localStorage.getItem('accessToken');
+      return item !== 'undefined' ? item : false;
+   }
    // return false;
-   // const accessToken = await getCookie('accessToken');
-   return false;
 };
 
 const initialRefreshToken = async () => {
-   // if (typeof window !== 'undefined') {
-   //    const item = window?.localStorage.getItem('refreshToken');
-   //    return item !== 'undefined' ? JSON.parse(item) : false;
-   // }
+   if (typeof window !== 'undefined') {
+      const item = window?.localStorage.getItem('refreshToken');
+      return item !== 'undefined' ? JSON.parse(item) : false;
+   }
    //return false;
-   // const refreshToken = await getCookie('refreshToken');
-   return false;
 };
 
-const initialUser = () => {
-   // if (typeof window !== 'undefined') {
-   //    const item = window?.localStorage.getItem('userinfo');
-   //    return item !== 'undefined' ? JSON.parse(item) : false;
-   // }
-   return false;
+const initialUserInfo = async () => {
+   if (typeof window !== 'undefined') {
+      const item = window?.localStorage.getItem('userInfo');
+      // return item !== 'undefined' ? JSON.parse(item) : false;
+      return item;
+   }
+   //return false;
 };
 
 export const authSlice = createSlice({
    name: 'auth',
    initialState: {
-      userinfo: initialUser(),
+      userInfo: initialUserInfo(),
       accessToken: initialAccessToken(),
       refreshToken: initialRefreshToken(),
    },
@@ -78,45 +74,23 @@ export const authSlice = createSlice({
       },
 
       // eslint-disable-next-line no-unused-vars
-      loginSlice: async (state, action) => {
-         state.accessToken = action.payload.accessToken;
-         state.accessTokenExpiry = action.payload.accessTokenExpiry;
-         // // save in local storage
-         // if (typeof window !== 'undefined') {
-         //    window?.localStorage.setItem('accessToken', state.accessToken);
-         // }
-
-         // const encryptedToken = await nextEncrypt(state.accessToken);
-
-         // await setCookie(
-         //    'accessToken',
-         //    encryptedToken,
-         //    state.accessTokenExpiry,
-         // );
-
-         //window.location.reload();
+      loginSlice: (state, action) => {
+         state.accessToken = action.payload.token.accessToken;
+         state.userInfo = action.payload.userInfoEncrypted;
+         state.refreshToken = action.payload.token.refreshToken;      
       },
+
       // eslint-disable-next-line no-unused-vars
       refreshAccessTokenSlice: (state, action) => {
          state.accessToken = action.payload.accessToken;
-         // state.accessTokenExpiry = action.payload.accessTokenExpiry;
+         state.accessTokenExpiry = action.payload.accessTokenExpiry;
 
-         // save in local storage
-         // if (typeof window !== 'undefined') {
-         //    window?.localStorage.setItem('accessToken', state.accessToken);
-         // }
-
-         setCookie(
-            'accessToken',
-            nextEncrypt(state.accessToken),
-            state.accessTokenExpiry,
-         );
       },
       handleLogout: () => {
          clearCookie();
-         // remove from local storage
+         // remove all local storage
          if (typeof window !== 'undefined') {
-            window?.localStorage.removeItem('accessToken');
+            window?.localStorage.clear();
          }
       },
    },

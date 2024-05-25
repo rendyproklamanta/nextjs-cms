@@ -1,10 +1,12 @@
 'use client';
 
-import { useGetUserInfoQuery } from '@/src/store/api/authApi';
+import useUserInfo from '@/src/hooks/useUserInfo';
+// import { useGetUserInfoQuery } from '@/src/store/api/authApi';
 import React from 'react';
 
 const DashboardPage = () => {
-   const { isLoading, data: res } = useGetUserInfoQuery();
+   // const { isLoading, data: res } = useGetUserInfoQuery();
+   const { userInfo } = useUserInfo();
 
    return (
       <>
@@ -22,7 +24,7 @@ const DashboardPage = () => {
                         Selamat Datang..
                      </p>
                      <p className="block text-xl capitalize text-white md:text-3xl">
-                        {!isLoading && res?.data?.name}
+                        {userInfo?.name}
                      </p>
                   </div>
                </div>

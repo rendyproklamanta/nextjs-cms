@@ -6,10 +6,12 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { handleLogout } from '@/src/store/slices/authSlice';
 import Image from 'next/image';
-import { useGetUserInfoQuery } from '@/src/store/api/authApi';
+import useUserInfo from '@/src/hooks/useUserInfo';
+// import { useGetUserInfoQuery } from '@/src/store/api/authApi';
 
 const Profile = () => {
-   const { isLoading, data: res } = useGetUserInfoQuery();
+   // const { isLoading, data: res } = useGetUserInfoQuery();
+   const { userInfo } = useUserInfo();
 
    const dispatch = useDispatch();
    const router = useRouter();
@@ -34,7 +36,7 @@ const Profile = () => {
             </div>
             <div className="flex-none items-center overflow-hidden text-ellipsis whitespace-nowrap text-sm font-normal text-slate-600 dark:text-white lg:flex">
                <span className="block w-[100px] overflow-hidden text-ellipsis whitespace-nowrap capitalize">
-                  {!isLoading && res?.data?.name}
+                  {userInfo?.name}
                </span>
                <span className="inline-block text-base ltr:ml-[10px] rtl:mr-[10px]">
                   <Icon icon="heroicons-outline:chevron-down"></Icon>
@@ -51,7 +53,7 @@ const Profile = () => {
 
          action: () => {
             router.push(
-               `/${!isLoading && res?.data?.role === 'admin' ? 'admin' : 'user'}/${res?.data?._id}`,
+               `/${userInfo.role === 'admin' ? 'admin' : 'user'}/${userInfo._id}`,
             );
          },
       },

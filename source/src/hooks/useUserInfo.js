@@ -1,18 +1,29 @@
+import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { useGetUserInfoQuery } from '../store/api/authApi';
+import { nextDecrypt } from '../utils/encryption';
 
 const useUserInfo = () => {
-   const [user, setUser] = useState('');
-   const { isLoading, data: res } = useGetUserInfoQuery();
+   const [userInfo, setUserInfo] = useState('');
+   const { userInfo: userInfoLocal } = useSelector((state) => state.auth);
 
    useEffect(() => {
-      if (!isLoading) {
-         setUser(res);
-      }
-   }, [isLoading, res]);
+      const fetchData = async () => {
+         try {
+            const getUserInfo = await userInfoLocal;
+            if (getUserInfo) {
+               const getUserInfoDecrypt = await nextDecrypt(getUserInfo);
+               setUserInfo(JSON.parse(getUserInfoDecrypt));
+            }
+         } catch (error) {
+            console.error('Error fetching data:', error);
+         }
+      };
+      fetchData();
 
-   return [isLoading, user];
+   }, [userInfoLocal]);
+
+   return { userInfo };
 };
 
 export default useUserInfo;

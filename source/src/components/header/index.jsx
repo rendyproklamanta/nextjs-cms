@@ -10,15 +10,16 @@ import Logo from './Tools/Logo';
 // import SearchModal from './Tools/SearchModal';
 import Profile from './Tools/Profile';
 import useMobileMenu from '@/src/hooks/useMobileMenu';
-import { useGetUserInfoQuery } from '@/src/store/api/authApi';
 import { WEBSITE_NAME } from '@/src/constant/setting';
+import useUserInfo from '@/src/hooks/useUserInfo';
 
 const Header = ({ className = 'custom-class' }) => {
    const [collapsed, setMenuCollapsed] = useSidebar();
    const { width, breakpoints } = useWidth();
    const [navbarType] = useNavbarType();
 
-   const { isLoading, data: res } = useGetUserInfoQuery();
+   // const { isLoading, data: res } = useGetUserInfoQuery();
+   const { userInfo } = useUserInfo();
 
    const navbarTypeClass = () => {
       switch (navbarType) {
@@ -85,8 +86,7 @@ const Header = ({ className = 'custom-class' }) => {
                      {/* <SearchModal /> */}
 
                      <marquee direction="left">
-                        ____________👋👋👋👋👋 Hi{' '}
-                        {!isLoading && res?.data?.name},{' '}
+                        ____________👋👋👋👋👋 Hi {userInfo?.name},{' '}
                         <span data-key="t-welcome-to">Welcome to </span>{' '}
                         {WEBSITE_NAME}👋👋👋👋____________
                      </marquee>

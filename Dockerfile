@@ -1,7 +1,7 @@
 FROM public.ecr.aws/docker/library/node:20-alpine
 
 # Install apk alpine
-RUN apk --update --no-cache add curl tzdata
+RUN apk --update --no-cache add curl tzdata nginx
 
 # Set Timezone
 RUN ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
@@ -9,28 +9,16 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
 # Set Environment
 ENV PATH /app/node_modules/.bin:$PATH
 
-# Install Yarn
-RUN npm install -g yarn --force
-run yarn set version stable
-
 # Set Working Directory
 WORKDIR /app
 
 # Install package
 COPY ./source/package.json .
-RUN yarn
+RUN npm install --legacy-peer-deps
 
 # Copy your files to container
 COPY ./source .
 COPY ./conf/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./conf/nginx/default.conf /etc/nginx/conf.d/default.conf 
 
-# Build the Next.js application
-RUN yarn build
-
-HEALTHCHECK --interval=30s --timeout=3s --retries=3 --start-interval=10s \
-  CMD curl -f http://localhost:3000 || exit 1
-
 EXPOSE 3000
-
-CMD [ "yarn", "start" ]

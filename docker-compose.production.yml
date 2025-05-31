@@ -4,12 +4,24 @@ services:
   nextjs-production:
     build:
       context: .
-      dockerfile: ./Dockerfile.production
+      dockerfile: ./Dockerfile
+    entrypoint: yarn build && yarn start
     environment:
       - NODE_ENV=production
       - TZ=Asia/Jakarta
     volumes:
       - /var/log/nginx:/var/log/nginx
+    logging:
+        driver: "json-file"
+        options:
+          max-size: "10m"
+          max-file: "1"
+    healthcheck:
+        test: ["CMD", "curl", "--fail", "http://localhost:3000"]
+        interval: 5m
+        start_interval: 20s
+        start_period: 3m
+        timeout: 5s
     networks:
       - traefik-network
     deploy:

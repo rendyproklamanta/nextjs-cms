@@ -3,7 +3,7 @@
 ## Upgrade packages latest
 
 ```shell
-cd source && yarn upgrade --latest
+cd source && yarn upgrade --latest && cd ..
 ```
 
 ## Run local development
@@ -15,7 +15,7 @@ docker compose -f docker-compose.development.yml up -d --force-recreate
 > Open URL : http://localhost:3000 <!-- markdownlint-disable MD034 -->
 
 ```shell
-Credentials admin
+> Credential admin
 username: admin
 password: 123qwe
 ```
